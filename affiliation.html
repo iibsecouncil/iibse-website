@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Affiliation - IIBSE Council</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+        }
+
+        /* HEADER */
+        .header {
+            background: #0b1a33;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 26px; margin: 0; }
+        .nav a {
+            color: gold;
+            margin-left: 25px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* CONTAINER */
+        .container { padding: 40px 60px; }
+
+        h2 { color: #0b1a33; font-size: 32px; margin-bottom: 20px; }
+        p { font-size: 18px; line-height: 1.7; }
+
+        /* FORM */
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        form label { display: block; margin-top: 15px; font-weight: bold; }
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        form button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #00c6ff;
+            border: none;
+            border-radius: 6px;
+            color: #003047;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        form button:hover {
+            background: #007bb5;
+            color: white;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #0b1a33;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>IIBSE Council</h1>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="affiliation.html">Affiliation</a>
+            <a href="examination.html">Examination</a>
+            <a href="courses.html">Courses</a>
+            <a href="verification.html">Verification</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>School Affiliation Application</h2>
+        <p>
+            Welcome to IIBSE Council affiliation portal. Schools can apply online for affiliation 
+            with our autonomous board. Please fill the form below accurately.
+        </p>
+
+        <form action="#" method="post">
+            <label for="schoolName">School Name</label>
+            <input type="text" id="schoolName" name="schoolName" placeholder="Enter School Name" required>
+
+            <label for="principalName">Principal Name</label>
+            <input type="text" id="principalName" name="principalName" placeholder="Enter Principal Name" required>
+
+            <label for="email">Email ID</label>
+            <input type="email" id="email" name="email" placeholder="Enter Email" required>
+
+            <label for="phone">Contact Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter Contact Number" required>
+
+            <label for="address">School Address</label>
+            <textarea id="address" name="address" rows="3" placeholder="Enter Full Address" required></textarea>
+
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" placeholder="Enter State" required>
+
+            <label for="board">Current Board Affiliation</label>
+            <select id="board" name="board">
+                <option value="none">None</option>
+                <option value="cbse">CBSE</option>
+                <option value="icse">ICSE</option>
+                <option value="state">State Board</option>
+            </select>
+
+            <label for="students">Number of Students</label>
+            <input type="number" id="students" name="students" placeholder="Total Students" required>
+
+            <label for="docs">Upload Documents (PDF only)</label>
+            <input type="file" id="docs" name="docs" accept=".pdf">
+
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 IIBSE Council — Autonomous Section 8 Organisation | All Rights Reserved
+    </div>
+
+</body>
+</html>
