@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Courses - IIBSE Council</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+        }
+
+        /* HEADER */
+        .header {
+            background: #0b1a33;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 26px; margin: 0; }
+        .nav a {
+            color: gold;
+            margin-left: 25px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* CONTAINER */
+        .container { padding: 40px 60px; }
+
+        h2 { color: #0b1a33; font-size: 32px; margin-bottom: 20px; }
+        p { font-size: 18px; line-height: 1.7; }
+
+        /* COURSES CARDS */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            color: #0b1a33;
+            margin-bottom: 10px;
+        }
+        .card p { font-size: 16px; line-height: 1.5; }
+
+        /* FOOTER */
+        .footer {
+            background: #0b1a33;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>IIBSE Council</h1>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="affiliation.html">Affiliation</a>
+            <a href="examination.html">Examination</a>
+            <a href="courses.html">Courses</a>
+            <a href="verification.html">Verification</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Courses Offered</h2>
+        <p>
+            IIBSE Council offers a variety of skill-integrated and diploma courses for students after 12th 
+            and technical school students. All courses are aligned with NSQF and industry standards.
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Diploma in Digital Skills</h3>
+                <p>Learn coding, website design, AI basics, data analytics, and modern IT skills.</p>
+            </div>
+            <div class="card">
+                <h3>Healthcare Certification</h3>
+                <p>Short-term and long-term paramedical courses for hospitals, clinics, and community care.</p>
+            </div>
+            <div class="card">
+                <h3>Technical Skill Development</h3>
+                <p>Hands-on vocational courses in electronics, mechanical, IT, and industrial skills.</p>
+            </div>
+            <div class="card">
+                <h3>Professional Workshops</h3>
+                <p>Soft skills, communication, management, and leadership training for employability.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 IIBSE Council — Autonomous Section 8 Organisation | All Rights Reserved
+    </div>
+
+</body>
+</html>
