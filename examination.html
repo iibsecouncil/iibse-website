@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Examination - IIBSE Council</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+        }
+
+        /* HEADER */
+        .header {
+            background: #0b1a33;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 26px; margin: 0; }
+        .nav a {
+            color: gold;
+            margin-left: 25px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* CONTAINER */
+        .container { padding: 40px 60px; }
+
+        h2 { color: #0b1a33; font-size: 32px; margin-bottom: 20px; }
+        p { font-size: 18px; line-height: 1.7; }
+
+        /* FORM */
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        form label { display: block; margin-top: 15px; font-weight: bold; }
+        form input, form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        form button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #00c6ff;
+            border: none;
+            border-radius: 6px;
+            color: #003047;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        form button:hover {
+            background: #007bb5;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0b1a33;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>IIBSE Council</h1>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="affiliation.html">Affiliation</a>
+            <a href="examination.html">Examination</a>
+            <a href="courses.html">Courses</a>
+            <a href="verification.html">Verification</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Examination Registration</h2>
+        <p>
+            IIBSE Council provides modern online examination systems. Students can register online 
+            for upcoming exams, download admit cards, and access results with QR-verified certificates.
+        </p>
+
+        <form action="#" method="post">
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" name="studentName" placeholder="Enter Full Name" required>
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="email">Email ID</label>
+            <input type="email" id="email" name="email" placeholder="Enter Email" required>
+
+            <label for="phone">Contact Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter Contact Number" required>
+
+            <label for="school">School / Institute Name</label>
+            <input type="text" id="school" name="school" placeholder="Enter School Name" required>
+
+            <label for="grade">Class / Grade</label>
+            <select id="grade" name="grade" required>
+                <option value="">Select Grade</option>
+                <option value="Nursery">Nursery</option>
+                <option value="KG">KG</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+
+            <label for="exam">Select Exam</label>
+            <select id="exam" name="exam" required>
+                <option value="">Choose Exam</option>
+                <option value="annual">Annual Exam</option>
+                <option value="skill">Skill Certification</option>
+                <option value="diploma">Diploma Assessment</option>
+            </select>
+
+            <button type="submit">Register for Exam</button>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 IIBSE Council — Autonomous Section 8 Organisation | All Rights Reserved
+    </div>
+
+</body>
+</html>
