@@ -6,14 +6,18 @@ import multer from "multer";
 import cloudinary from "cloudinary";
 
 dotenv.config();
+
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-// SUPABASE CLIENT
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE);
+// Supabase Client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE
+);
 
-// CLOUDINARY CONFIG
+// Cloudinary Config
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -23,12 +27,26 @@ cloudinary.v2.config({
 // File upload setup
 const upload = multer({ storage: multer.memoryStorage() });
 
-// TEST ROUTE
+// Root Test Route
 app.get("/", (req, res) => {
   res.send("IIBSE Backend Running Successfully ✔");
 });
 
-// START SERVER
-app.listen(process.env.PORT || 3000, () =>
-  console.log("Server running on port 3000")
-);
+// Test DB Connection
+app.get("/api/test", async (req, res) => {
+  const { data, error } = await supabase
+    .from("schools")
+    .select("*")
+    .limit(1);
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  res.json({
+    message: "Connected to Supabase ✔",
+    sample_row: data,
+  });
+});
+
+// Start Server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
