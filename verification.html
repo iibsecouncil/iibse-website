@@ -1,122 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verification - IIBSE Council</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6fa;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IIBSE | Student Verification</title>
 
-        /* HEADER */
-        .header {
-            background: #0b1a33;
-            color: white;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header h1 { font-size: 26px; margin: 0; }
-        .nav a {
-            color: gold;
-            margin-left: 25px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
 
-        /* CONTAINER */
-        .container { padding: 40px 60px; }
+    .container {
+      max-width: 430px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-        h2 { color: #0b1a33; font-size: 32px; margin-bottom: 20px; }
-        p { font-size: 18px; line-height: 1.7; }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1a237e;
+    }
 
-        /* FORM */
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: auto;
-        }
-        form label { display: block; margin-top: 15px; font-weight: bold; }
-        form input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        form button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #00c6ff;
-            border: none;
-            border-radius: 6px;
-            color: #003047;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        form button:hover {
-            background: #007bb5;
-            color: white;
-        }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      font-size: 16px;
+    }
 
-        /* FOOTER */
-        .footer {
-            background: #0b1a33;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-        }
-    </style>
+    button {
+      width: 100%;
+      background: #1a237e;
+      color: white;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #000c57;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 6px;
+      background: #eef1ff;
+    }
+
+    .not-found {
+      color: red;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .found {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="container">
+    <h2>Student Verification</h2>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>IIBSE Council</h1>
-        <div class="nav">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="affiliation.html">Affiliation</a>
-            <a href="examination.html">Examination</a>
-            <a href="courses.html">Courses</a>
-            <a href="verification.html">Verification</a>
-            <a href="contact.html">Contact</a>
-        </div>
-    </div>
+    <input type="text" id="regno" placeholder="Enter Registration Number" />
 
-    <div class="container">
-        <h2>Certificate / Student Verification</h2>
-        <p>
-            Enter the unique certificate number or student ID to verify authenticity of the certificate issued by IIBSE Council.
-        </p>
+    <button onclick="checkVerification()">Verify</button>
 
-        <form action="#" method="post">
-            <label for="verificationId">Certificate / Student ID</label>
-            <input type="text" id="verificationId" name="verificationId" placeholder="Enter ID" required>
+    <div id="result"></div>
+  </div>
 
-            <button type="submit">Verify</button>
-        </form>
+  <script>
+    async function checkVerification() {
+      const reg = document.getElementById("regno").value.trim();
+      const output = document.getElementById("result");
 
-        <p style="margin-top:20px; font-size:16px;">
-            After submission, if the certificate or student ID is valid, the system will display verification details including student name, course, and date of issue.
-        </p>
-    </div>
+      if (reg === "") {
+        output.innerHTML = "<p class='not-found'>Please enter registration number</p>";
+        return;
+      }
 
-    <!-- FOOTER -->
-    <div class="footer">
-        © 2025 IIBSE Council — Autonomous Section 8 Organisation | All Rights Reserved
-    </div>
+      output.innerHTML = "<p>Checking...</p>";
 
+      const apiUrl = "https://iibse-backend.onrender.com/api/verify?regno=" + reg;
+
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        if (data.status === "Not Found") {
+          output.innerHTML = "<p class='not-found'>❌ No record found</p>";
+        } else {
+          output.innerHTML = `
+            <p class="found">✔ Record Found</p>
+            <b>Name:</b> ${data.student.full_name}<br>
+            <b>Reg No:</b> ${data.student.student_id}<br>
+            <b>Class:</b> ${data.student.class}<br>
+            <b>Year of Passing:</b> ${data.student.year_of_passing}<br>
+            <b>School ID:</b> ${data.student.school_id}<br>
+          `;
+        }
+      } catch (err) {
+        output.innerHTML = "<p class='not-found'>Server Error</p>";
+      }
+    }
+  </script>
 </body>
 </html>
