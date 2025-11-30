@@ -1,1 +1,12 @@
+console.log("IIBSE Frontend Connected ✔");
+
+// API Base URL
+const API_URL = "https://iibse-website.onrender.com";
+
+// Test API Button Handler
+async function testAPI() {
+  const res = await fetch(`${API_URL}/api/test`);
+  const data = await res.json();
+  console.log("API Response:", data);
+}
 
