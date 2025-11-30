@@ -1,1 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IIBSE Home</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>Welcome to IIBSE</h1>
+</header>
+
+<div class="container">
+  <h2>Frontend Connected Successfully ✔</h2>
+  <button onclick="testAPI()">Test API</button>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>
 
