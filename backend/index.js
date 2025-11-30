@@ -36,21 +36,21 @@ app.get("/", (req, res) => {
   res.send("IIBSE Backend Running Successfully ✔");
 });
 
-// Health Check Route
+// Health Check
 app.get("/health", (req, res) => {
   res.json({
     status: "ok",
     message: "IIBSE Backend Working",
-    uptime: process.uptime()
+    uptime: process.uptime(),
   });
 });
 
-// Status Route
+// Status
 app.get("/status", (req, res) => {
   res.json({
     running: true,
     service: "IIBSE Backend",
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -60,8 +60,7 @@ app.get("/status", (req, res) => {
 app.get("/api/test", async (req, res) => {
   const { data, error } = await supabase.from("schools").select("*").limit(1);
 
-  if (error)
-    return res.status(500).json({ error: error.message });
+  if (error) return res.status(500).json({ error: error.message });
 
   res.json({
     message: "Connected to Supabase ✔",
@@ -73,7 +72,17 @@ app.get("/api/test", async (req, res) => {
 // 1️⃣ SCHOOL REGISTRATION API
 // ------------------------------------------
 app.post("/api/schools/register", async (req, res) => {
-  const { school_name, registration_no, principal_name, email, phone, address, city, state, pincode } = req.body;
+  const {
+    school_name,
+    registration_no,
+    principal_name,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    pincode,
+  } = req.body;
 
   const { data, error } = await supabase
     .from("schools")
@@ -115,7 +124,7 @@ app.post("/api/students/add", async (req, res) => {
     class: className,
     student_id,
     roll_no,
-    year_of_passing
+    year_of_passing,
   } = req.body;
 
   const { data, error } = await supabase
@@ -150,22 +159,52 @@ app.post("/api/students/add", async (req, res) => {
 app.post("/api/upload", upload.single("file"), async (req, res) => {
   try {
     const file = req.file;
-    const uploadResult = await cloudinary.v2.uploader.upload_stream(
-      { resource_type: "auto" },
-      async (error, result) => {
-        if (error) return res.status(500).json({ error: error.message });
 
-        res.json({
+    cloudinary.v2.uploader
+      .upload_stream({ resource_type: "auto" }, (error, result) => {
+        if (error) {
+          return res.status(500).json({ error: error.message });
+        }
+        return res.json({
           message: "File Uploaded Successfully ✔",
           url: result.secure_url,
         });
-      }
-    );
-
-    uploadResult.end(file.buffer);
-
+      })
+      .end(file.buffer);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// ------------------------------------------
+// 4️⃣ STUDENT VERIFICATION API (NEW)
+// ------------------------------------------
+app.get("/api/verify", async (req, res) => {
+  try {
+    const regno = req.query.regno;
+
+    if (!regno) {
+      return res
+        .status(400)
+        .json({ error: "Registration number is required" });
+    }
+
+    const { data, error } = await supabase
+      .from("students")
+      .select("*")
+      .eq("student_id", regno)
+      .single();
+
+    if (error || !data) {
+      return res.json({ status: "Not Found" });
+    }
+
+    res.json({
+      status: "Success",
+      student: data,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
@@ -176,4 +215,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`)
 );
-
