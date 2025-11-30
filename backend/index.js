@@ -36,6 +36,24 @@ app.get("/", (req, res) => {
   res.send("IIBSE Backend Running Successfully ✔");
 });
 
+// Health Check Route
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "IIBSE Backend Working",
+    uptime: process.uptime()
+  });
+});
+
+// Status Route
+app.get("/status", (req, res) => {
+  res.json({
+    running: true,
+    service: "IIBSE Backend",
+    timestamp: new Date().toISOString()
+  });
+});
+
 // ------------------------------
 // TEST DATABASE CONNECTION
 // ------------------------------
