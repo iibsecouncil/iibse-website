@@ -1,66 +1,89 @@
-const backendURL = "https://iibse-backend.onrender.com";  // your backend URL
+const backend = "https://iibse-backend.onrender.com";
 
-// Load Dashboard Data
-async function loadDashboard() {
+// -------------------------
+// Check Login Token
+// -------------------------
+const token = localStorage.getItem("adminToken");
+if (!token) window.location.href = "../admin-login.html";
+
+// ----------------------------
+// Load Pending Schools
+// ----------------------------
+async function loadPending() {
+    const table = document.getElementById("school-table");
+    table.innerHTML = "<tr><td colspan='6'>Loading...</td></tr>";
+
     try {
-        // 1️⃣ Fetch Total Schools
-        const schoolRes = await fetch(`${backendURL}/api/schools/count`);
-        const schoolData = await schoolRes.json();
-        document.getElementById("totalSchools").innerText = schoolData.count;
+        const res = await fetch(`${backend}/api/admin/pending-schools`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
 
-        // 2️⃣ Fetch Total Students
-        const studentRes = await fetch(`${backendURL}/api/students/count`);
-        const studentData = await studentRes.json();
-        document.getElementById("totalStudents").innerText = studentData.count;
+        const data = await res.json();
 
-        // 3️⃣ Load Pending Schools
-        const pendingRes = await fetch(`${backendURL}/api/schools/pending`);
-        const pendingSchools = await pendingRes.json();
+        if (!res.ok) {
+            table.innerHTML = "<tr><td colspan='6'>Failed to load</td></tr>";
+            return;
+        }
 
-        let rows = "";
+        if (data.length === 0) {
+            table.innerHTML = "<tr><td colspan='6'>No Pending Schools</td></tr>";
+            return;
+        }
 
-        pendingSchools.forEach(school => {
-            rows += `
+        table.innerHTML = "";
+
+        data.forEach(school => {
+            table.innerHTML += `
                 <tr>
-                    <td>${school.school_name}</td>
-                    <td>${school.registration_no}</td>
-                    <td>${school.principal_name}</td>
-                    <td>${school.phone}</td>
-                    <td>${school.affiliation_status}</td>
-                    <td>
-                        <button onclick="approve('${school.id}')">Approve</button>
-                        <button onclick="reject('${school.id}')">Reject</button>
-                    </td>
+                  <td>${school.school_name}</td>
+                  <td>${school.registration_no}</td>
+                  <td>${school.principal_name}</td>
+                  <td>${school.phone}</td>
+                  <td>${school.affiliation_status}</td>
+
+                  <td>
+                    <button class="approve" onclick="approveSchool('${school.id}')">Approve</button>
+                    <button class="reject" onclick="rejectSchool('${school.id}')">Reject</button>
+                  </td>
                 </tr>
             `;
         });
 
-        document.getElementById("schoolTable").innerHTML = rows;
-
     } catch (err) {
-        console.error(err);
-        alert("Error loading dashboard");
+        table.innerHTML = "<tr><td colspan='6'>Server Error</td></tr>";
     }
 }
 
+loadPending();
+
+// ----------------------------
 // Approve School
-async function approve(id) {
-    await fetch(`${backendURL}/api/schools/approve/${id}`, { method: "POST" });
-    alert("School Approved ✔");
-    loadDashboard();
+// ----------------------------
+async function approveSchool(id) {
+    const res = await fetch(`${backend}/api/admin/school/approve/${id}`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    loadPending();
 }
 
+// ----------------------------
 // Reject School
-async function reject(id) {
-    await fetch(`${backendURL}/api/schools/reject/${id}`, { method: "POST" });
-    alert("School Rejected ❌");
-    loadDashboard();
+// ----------------------------
+async function rejectSchool(id) {
+    const res = await fetch(`${backend}/api/admin/school/reject/${id}`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    loadPending();
 }
 
+// ----------------------------
 // Logout
+// ----------------------------
 function logout() {
-    window.location.href = "/frontend/admin-login.html";
+    localStorage.removeItem("adminToken");
+    window.location.href = "../admin-login.html";
 }
-
-loadDashboard();
-
