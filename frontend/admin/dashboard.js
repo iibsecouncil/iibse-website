@@ -35,15 +35,15 @@ async function loadPending() {
         data.forEach(school => {
             table.innerHTML += `
                 <tr>
-                  <td>${school.school_name}</td>
-                  <td>${school.registration_no}</td>
-                  <td>${school.principal_name}</td>
+                  <td>${school.schoolName}</td>
+                  <td>${school.registrationNumber}</td>
+                  <td>${school.principalName}</td>
                   <td>${school.phone}</td>
-                  <td>${school.affiliation_status}</td>
+                  <td>${school.status}</td>
 
                   <td>
-                    <button class="approve" onclick="approveSchool('${school.id}')">Approve</button>
-                    <button class="reject" onclick="rejectSchool('${school.id}')">Reject</button>
+                    <button class="approve" onclick="approveSchool('${school._id}')">Approve</button>
+                    <button class="reject" onclick="rejectSchool('${school._id}')">Reject</button>
                   </td>
                 </tr>
             `;
@@ -60,7 +60,7 @@ loadPending();
 // Approve School
 // ----------------------------
 async function approveSchool(id) {
-    const res = await fetch(`${backend}/api/admin/school/approve/${id}`, {
+    await fetch(`${backend}/api/admin/school/approve/${id}`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
     });
@@ -72,7 +72,7 @@ async function approveSchool(id) {
 // Reject School
 // ----------------------------
 async function rejectSchool(id) {
-    const res = await fetch(`${backend}/api/admin/school/reject/${id}`, {
+    await fetch(`${backend}/api/admin/school/reject/${id}`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
     });
