@@ -3,156 +3,105 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Examination - IIBSE Council</title>
+    <title>IIBSE | Examination</title>
+
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6fa;
+        body { margin:0; font-family: Arial; background:#f4f4f4; }
+        header { background:#002b5b; color:white; padding:20px; text-align:center; }
+        nav { background:#014f86; padding:10px; text-align:center; }
+        nav a { color:white; margin:12px; text-decoration:none; }
+        nav a:hover { border-bottom:2px solid white; }
+        .container {
+            max-width:900px; margin:auto; background:white; padding:25px;
+            margin-top:25px; border-radius:8px; 
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
         }
-
-        /* HEADER */
-        .header {
-            background: #0b1a33;
-            color: white;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        h2 { color:#002b5b; }
+        .box {
+            background:#eef1ff;
+            border-left:5px solid #002b5b;
+            padding:15px;
+            margin-bottom:20px;
+            border-radius:5px;
         }
-        .header h1 { font-size: 26px; margin: 0; }
-        .nav a {
-            color: gold;
-            margin-left: 25px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* CONTAINER */
-        .container { padding: 40px 60px; }
-
-        h2 { color: #0b1a33; font-size: 32px; margin-bottom: 20px; }
-        p { font-size: 18px; line-height: 1.7; }
-
-        /* FORM */
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 800px;
-            margin: auto;
-        }
-        form label { display: block; margin-top: 15px; font-weight: bold; }
-        form input, form select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        form button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #00c6ff;
-            border: none;
-            border-radius: 6px;
-            color: #003047;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        form button:hover {
-            background: #007bb5;
-            color: white;
-        }
-
-        /* Footer */
-        .footer {
-            background: #0b1a33;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
+        footer {
+            background:#002b5b; 
+            color:white; 
+            padding:15px; 
+            text-align:center;
+            margin-top:40px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>IIBSE Council</h1>
-        <div class="nav">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="affiliation.html">Affiliation</a>
-            <a href="examination.html">Examination</a>
-            <a href="courses.html">Courses</a>
-            <a href="verification.html">Verification</a>
-            <a href="contact.html">Contact</a>
-        </div>
+<header>
+    <h1>Examination Section</h1>
+    <p>IIBSE Examination Process | Rules | Timetable</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="affiliation.html">Affiliation</a>
+    <a href="courses.html">Courses</a>
+    <a href="examination.html">Examination</a>
+    <a href="verification.html">Verification</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+
+    <h2>Examination Overview</h2>
+
+    <div class="box">
+        <h3>📌 Examination Pattern</h3>
+        <p>• 30% Internal Assessment</p>
+        <p>• 70% Final Examination</p>
+        <p>• Practical examination for technical and vocational subjects</p>
     </div>
 
-    <div class="container">
-        <h2>Examination Registration</h2>
-        <p>
-            IIBSE Council provides modern online examination systems. Students can register online 
-            for upcoming exams, download admit cards, and access results with QR-verified certificates.
-        </p>
-
-        <form action="#" method="post">
-            <label for="studentName">Student Name</label>
-            <input type="text" id="studentName" name="studentName" placeholder="Enter Full Name" required>
-
-            <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob" required>
-
-            <label for="email">Email ID</label>
-            <input type="email" id="email" name="email" placeholder="Enter Email" required>
-
-            <label for="phone">Contact Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter Contact Number" required>
-
-            <label for="school">School / Institute Name</label>
-            <input type="text" id="school" name="school" placeholder="Enter School Name" required>
-
-            <label for="grade">Class / Grade</label>
-            <select id="grade" name="grade" required>
-                <option value="">Select Grade</option>
-                <option value="Nursery">Nursery</option>
-                <option value="KG">KG</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-
-            <label for="exam">Select Exam</label>
-            <select id="exam" name="exam" required>
-                <option value="">Choose Exam</option>
-                <option value="annual">Annual Exam</option>
-                <option value="skill">Skill Certification</option>
-                <option value="diploma">Diploma Assessment</option>
-            </select>
-
-            <button type="submit">Register for Exam</button>
-        </form>
+    <div class="box">
+        <h3>📌 Eligibility Criteria</h3>
+        <p>Students enrolled under an IIBSE-affiliated institution are eligible for exams.</p>
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-        © 2025 IIBSE Council — Autonomous Section 8 Organisation | All Rights Reserved
+    <h2>Examination Timetable</h2>
+
+    <div class="box">
+        <p>The official timetable will be uploaded soon.</p>
+        <p>Registered institutions will receive notification.</p>
     </div>
+
+    <h2>Hall Ticket / Admit Card</h2>
+
+    <div class="box">
+        <p>Schools will be able to download hall tickets from the admin dashboard (coming soon).</p>
+        <p>Students will also be able to download using Registration Number.</p>
+    </div>
+
+    <h2>Examination Rules</h2>
+
+    <div class="box">
+        <p>✔ Carry valid ID proof</p>
+        <p>✔ Mobile phones are strictly prohibited</p>
+        <p>✔ No late entry beyond 30 minutes</p>
+        <p>✔ Students must follow the dress code (if applicable)</p>
+    </div>
+
+    <h2>Results & Marksheet</h2>
+
+    <div class="box">
+        <p>Results will be published online under the “Verification” section.</p>
+        <p>Students will be able to check using their Registration Number.</p>
+    </div>
+
+</div>
+
+<footer>
+    © 2025 IIBSE | India International Board of Skills & Education
+</footer>
 
 </body>
 </html>
