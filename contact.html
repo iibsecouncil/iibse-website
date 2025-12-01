@@ -3,141 +3,129 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact - IIBSE Council</title>
+    <title>IIBSE | Contact Us</title>
+
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6fa;
+        body { margin:0; font-family: Arial; background:#f4f4f4; }
+        header { background:#002b5b; color:white; padding:20px; text-align:center; }
+        nav { background:#014f86; padding:10px; text-align:center; }
+        nav a { color:white; margin:12px; text-decoration:none; }
+        nav a:hover { border-bottom:2px solid white; }
+
+        .container {
+            max-width:600px;
+            margin:auto;
+            background:white;
+            padding:25px;
+            margin-top:25px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
         }
 
-        /* HEADER */
-        .header {
-            background: #0b1a33;
-            color: white;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header h1 { font-size: 26px; margin: 0; }
-        .nav a {
-            color: gold;
-            margin-left: 25px;
-            text-decoration: none;
-            font-weight: bold;
+        input, textarea {
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:6px;
+            border:1px solid #bbb;
+            font-size:16px;
         }
 
-        /* CONTAINER */
-        .container { padding: 40px 60px; }
-
-        h2 { color: #0b1a33; font-size: 32px; margin-bottom: 20px; }
-        p { font-size: 18px; line-height: 1.7; }
-
-        /* FORM */
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 700px;
-            margin: auto;
-        }
-        form label { display: block; margin-top: 15px; font-weight: bold; }
-        form input, form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        form button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #00c6ff;
-            border: none;
-            border-radius: 6px;
-            color: #003047;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        form button:hover {
-            background: #007bb5;
-            color: white;
+        button {
+            width:100%;
+            padding:12px;
+            background:#014f86;
+            border:none;
+            color:white;
+            border-radius:6px;
+            font-size:17px;
+            cursor:pointer;
         }
 
-        /* CONTACT INFO */
-        .info {
-            max-width: 700px;
-            margin: 40px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .info p { margin-bottom: 10px; font-size: 16px; }
+        button:hover { background:#002b5b; }
 
-        /* FOOTER */
-        .footer {
-            background: #0b1a33;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
+        #response {
+            margin-top:20px;
+            padding:15px;
+            background:#eef1ff;
+            border-radius:6px;
+        }
+
+        footer {
+            background:#002b5b;
+            color:white;
+            padding:15px;
+            text-align:center;
+            margin-top:40px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>IIBSE Council</h1>
-        <div class="nav">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="affiliation.html">Affiliation</a>
-            <a href="examination.html">Examination</a>
-            <a href="courses.html">Courses</a>
-            <a href="verification.html">Verification</a>
-            <a href="contact.html">Contact</a>
-        </div>
-    </div>
+<header>
+    <h1>Contact Us</h1>
+    <p>We are here to help you.</p>
+</header>
 
-    <div class="container">
-        <h2>Contact Us</h2>
-        <p>We are here to help you. Please fill the form below and our team will respond promptly.</p>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="affiliation.html">Affiliation</a>
+    <a href="courses.html">Courses</a>
+    <a href="examination.html">Examination</a>
+    <a href="verification.html">Verification</a>
+    <a href="contact.html">Contact</a>
+</nav>
 
-        <form action="#" method="post">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+<div class="container">
 
-            <label for="email">Email ID</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+    <h2>Send Us a Message</h2>
 
-            <label for="phone">Contact Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+    <input id="full_name" placeholder="Full Name" />
+    <input id="email" type="email" placeholder="Email Address" />
+    <input id="phone" placeholder="Phone Number" />
+    <input id="subject" placeholder="Subject" />
+    <textarea id="message" rows="4" placeholder="Write your message here..."></textarea>
 
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Type your message here" required></textarea>
+    <button onclick="sendMessage()">Send Message</button>
 
-            <button type="submit">Send Message</button>
-        </form>
+    <div id="response"></div>
 
-        <div class="info">
-            <h3>Our Contact Details</h3>
-            <p><b>Address:</b> IIBSE Council HQ, Bangalore, Karnataka, India</p>
-            <p><b>Email:</b> info@iibse.in</p>
-            <p><b>Phone:</b> +91 9876543210</p>
-        </div>
-    </div>
+</div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-        © 2025 IIBSE Council — Autonomous Section 8 Organisation | All Rights Reserved
-    </div>
+<footer>
+    © 2025 IIBSE | India International Board of Skills & Education
+</footer>
+
+<script>
+async function sendMessage() {
+    const data = {
+        full_name: document.getElementById("full_name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        subject: document.getElementById("subject").value,
+        message: document.getElementById("message").value,
+    };
+
+    const res = await fetch("https://iibse-backend.onrender.com/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (result.error) {
+        document.getElementById("response").innerHTML =
+            `<p style='color:red'>❌ ${result.error}</p>`;
+    } else {
+        document.getElementById("response").innerHTML =
+            `<p style='color:green'>✔ Message Sent Successfully!  
+             <br>We will contact you shortly.</p>`;
+    }
+}
+</script>
 
 </body>
 </html>
