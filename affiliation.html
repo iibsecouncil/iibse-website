@@ -3,147 +3,110 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Affiliation - IIBSE Council</title>
+    <title>IIBSE | School Affiliation</title>
+
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6fa;
+        body { margin:0; font-family: Arial; background:#f4f4f4; }
+        header { background:#002b5b; color:white; padding:20px; text-align:center; }
+        nav { background:#014f86; padding:10px; text-align:center; }
+        nav a { color:white; margin:12px; text-decoration:none; }
+        nav a:hover { border-bottom:2px solid white; }
+        .container {
+            max-width:600px; margin:auto; background:white; padding:25px; 
+            margin-top:25px; border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
         }
-
-        /* HEADER */
-        .header {
-            background: #0b1a33;
-            color: white;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        input, textarea {
+            width:100%; padding:12px; margin:10px 0; border-radius:6px;
+            border:1px solid #bbb; font-size:15px;
         }
-        .header h1 { font-size: 26px; margin: 0; }
-        .nav a {
-            color: gold;
-            margin-left: 25px;
-            text-decoration: none;
-            font-weight: bold;
+        button {
+            width:100%; padding:12px; background:#014f86; border:none;
+            border-radius:6px; color:white; font-size:16px; cursor:pointer;
         }
-
-        /* CONTAINER */
-        .container { padding: 40px 60px; }
-
-        h2 { color: #0b1a33; font-size: 32px; margin-bottom: 20px; }
-        p { font-size: 18px; line-height: 1.7; }
-
-        /* FORM */
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 800px;
-            margin: auto;
+        button:hover { background:#002b5b; }
+        #response { margin-top:15px; padding:12px; background:#eef1ff; border-radius:6px; }
+        footer {
+            background:#002b5b; color:white; padding:15px; text-align:center;
+            margin-top:40px;
         }
-        form label { display: block; margin-top: 15px; font-weight: bold; }
-        form input, form select, form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        form button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #00c6ff;
-            border: none;
-            border-radius: 6px;
-            color: #003047;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        form button:hover {
-            background: #007bb5;
-            color: white;
-        }
-
-        /* FOOTER */
-        .footer {
-            background: #0b1a33;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>IIBSE Council</h1>
-        <div class="nav">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="affiliation.html">Affiliation</a>
-            <a href="examination.html">Examination</a>
-            <a href="courses.html">Courses</a>
-            <a href="verification.html">Verification</a>
-            <a href="contact.html">Contact</a>
-        </div>
-    </div>
+<header>
+    <h1>School Affiliation</h1>
+    <p>Apply Online for IIBSE Affiliation</p>
+</header>
 
-    <div class="container">
-        <h2>School Affiliation Application</h2>
-        <p>
-            Welcome to IIBSE Council affiliation portal. Schools can apply online for affiliation 
-            with our autonomous board. Please fill the form below accurately.
-        </p>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="affiliation.html">Affiliation</a>
+    <a href="courses.html">Courses</a>
+    <a href="examination.html">Examination</a>
+    <a href="verification.html">Verification</a>
+    <a href="contact.html">Contact</a>
+</nav>
 
-        <form action="#" method="post">
-            <label for="schoolName">School Name</label>
-            <input type="text" id="schoolName" name="schoolName" placeholder="Enter School Name" required>
+<div class="container">
 
-            <label for="principalName">Principal Name</label>
-            <input type="text" id="principalName" name="principalName" placeholder="Enter Principal Name" required>
+    <h2>Apply for Affiliation</h2>
+    <p>Fill the form below to get your school affiliated with IIBSE.</p>
 
-            <label for="email">Email ID</label>
-            <input type="email" id="email" name="email" placeholder="Enter Email" required>
+    <input id="school_name" placeholder="School Name" />
+    <input id="registration_no" placeholder="School Registration Number" />
+    <input id="principal_name" placeholder="Principal Name" />
+    <input id="email" type="email" placeholder="Official Email" />
+    <input id="phone" placeholder="Phone Number" />
+    <textarea id="address" placeholder="Full Address"></textarea>
+    <input id="city" placeholder="City" />
+    <input id="state" placeholder="State" />
+    <input id="pincode" placeholder="Pincode" />
 
-            <label for="phone">Contact Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter Contact Number" required>
+    <button onclick="submitAffiliation()">Submit Application</button>
 
-            <label for="address">School Address</label>
-            <textarea id="address" name="address" rows="3" placeholder="Enter Full Address" required></textarea>
+    <div id="response"></div>
+</div>
 
-            <label for="state">State</label>
-            <input type="text" id="state" name="state" placeholder="Enter State" required>
+<footer>
+    © 2025 IIBSE | India International Board of Skills & Education
+</footer>
 
-            <label for="board">Current Board Affiliation</label>
-            <select id="board" name="board">
-                <option value="none">None</option>
-                <option value="cbse">CBSE</option>
-                <option value="icse">ICSE</option>
-                <option value="state">State Board</option>
-            </select>
+<script>
+async function submitAffiliation() {
 
-            <label for="students">Number of Students</label>
-            <input type="number" id="students" name="students" placeholder="Total Students" required>
+    const data = {
+        school_name: document.getElementById("school_name").value,
+        registration_no: document.getElementById("registration_no").value,
+        principal_name: document.getElementById("principal_name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        pincode: document.getElementById("pincode").value
+    };
 
-            <label for="docs">Upload Documents (PDF only)</label>
-            <input type="file" id="docs" name="docs" accept=".pdf">
+    const res = await fetch("https://iibse-backend.onrender.com/api/schools/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
 
-            <button type="submit">Submit Application</button>
-        </form>
-    </div>
+    const result = await res.json();
 
-    <!-- FOOTER -->
-    <div class="footer">
-        © 2025 IIBSE Council — Autonomous Section 8 Organisation | All Rights Reserved
-    </div>
+    if (result.error) {
+        document.getElementById("response").innerHTML =
+            `<p style='color:red'>❌ ${result.error}</p>`;
+    } else {
+        document.getElementById("response").innerHTML =
+            `<p style='color:green'>✔ Application Submitted Successfully!  
+             <br>Our team will contact you soon.</p>`;
+    }
+}
+</script>
 
 </body>
 </html>
