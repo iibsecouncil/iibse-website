@@ -14,7 +14,8 @@ async function loadPending() {
     table.innerHTML = "<tr><td colspan='6'>Loading...</td></tr>";
 
     try {
-        const res = await fetch(`${backend}/api/admin/pending-schools`, {
+        const res = await fetch(`${backend}/api/schools/pending`, {
+
             headers: { "Authorization": `Bearer ${token}` }
         });
 
