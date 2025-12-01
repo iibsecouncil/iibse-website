@@ -1,102 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IIBSE Admin Login</title>
-    <link rel="stylesheet" href="./css/style.css" />
-    <style>
-        body {
-            background: #eef3ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial;
-        }
-        .login-box {
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-            width: 350px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .login-box h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 6px;
-            border: 1px solid #aaa;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #0066ff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-        button:hover {
-            background: #0047b3;
-            cursor: pointer;
-        }
-        .msg {
-            margin-top: 10px;
-            text-align: center;
-            color: red;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Admin Login - IIBSE</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <style>
+    body { font-family: Arial; background: #f5f7ff; }
+    .box { width: 400px; margin: 120px auto; padding: 25px; background: #fff; border-radius: 10px; 
+        box-shadow: 0 0 12px rgba(0,0,0,0.1); }
+    input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #aaa; border-radius: 6px; }
+    button { width: 100%; padding: 12px; background: #4a5eff; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #223bff; }
+    .error { color: red; margin-top: 8px; }
+  </style>
 </head>
 
 <body>
 
-    <div class="login-box">
-        <h2>IIBSE Admin Login</h2>
+  <div class="box">
+    <h2>Admin Login</h2>
 
-        <input type="text" id="username" placeholder="Enter Username" />
-        <input type="password" id="password" placeholder="Enter Password" />
+    <input type="text" id="username" placeholder="Enter Username" />
+    <input type="password" id="password" placeholder="Enter Password" />
 
-        <button onclick="loginAdmin()">Login</button>
+    <button onclick="adminLogin()">Login</button>
 
-        <p class="msg" id="msg"></p>
-    </div>
+    <p id="msg" class="error"></p>
+  </div>
 
 <script>
-async function loginAdmin() {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const msgBox = document.getElementById("msg");
+const backend = "https://iibse-backend.onrender.com";
 
-    msgBox.innerText = "Checking...";
+async function adminLogin() {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const msg = document.getElementById("msg");
+
+    msg.innerHTML = "";
+
+    if (!user || !pass) {
+        msg.innerHTML = "All fields required!";
+        return;
+    }
 
     try {
-        const response = await fetch("https://iibse-backend.onrender.com/api/admin/login", {
+        const res = await fetch(`${backend}/api/admin/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username: user, password: pass })
         });
 
-        const result = await response.json();
+        const data = await res.json();
 
-        if (result.success) {
-            msgBox.style.color = "green";
-            msgBox.innerText = "Login Successful! Redirecting...";
-
-            setTimeout(() => {
-                window.location.href = "admin-dashboard.html";
-            }, 1500);
-        } else {
-            msgBox.style.color = "red";
-            msgBox.innerText = result.error || "Invalid login!";
+        if (!res.ok) {
+            msg.innerHTML = data.error || "Login failed";
+            return;
         }
 
-    } catch (err) {
-        msgBox.innerText = "Server error!";
+        // Save token & redirect
+        localStorage.setItem("adminToken", data.token);
+
+        window.location.href = "./admin/dashboard.html";
+
+    } catch (error) {
+        msg.innerHTML = "Server Not Responding";
     }
 }
 </script>
