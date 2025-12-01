@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IIBSE | School Affiliation</title>
+    <title>About IIBSE</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
 
     <style>
         body { margin:0; font-family: Arial; background:#f4f4f4; }
@@ -12,20 +14,9 @@
         nav a { color:white; margin:12px; text-decoration:none; }
         nav a:hover { border-bottom:2px solid white; }
         .container {
-            max-width:600px; margin:auto; background:white; padding:25px; 
-            margin-top:25px; border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
+            max-width:900px; margin:auto; background:white; padding:25px;
+            margin-top:25px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);
         }
-        input, textarea {
-            width:100%; padding:12px; margin:10px 0; border-radius:6px;
-            border:1px solid #bbb; font-size:15px;
-        }
-        button {
-            width:100%; padding:12px; background:#014f86; border:none;
-            border-radius:6px; color:white; font-size:16px; cursor:pointer;
-        }
-        button:hover { background:#002b5b; }
-        #response { margin-top:15px; padding:12px; background:#eef1ff; border-radius:6px; }
         footer {
             background:#002b5b; color:white; padding:15px; text-align:center;
             margin-top:40px;
@@ -36,8 +27,8 @@
 <body>
 
 <header>
-    <h1>School Affiliation</h1>
-    <p>Apply Online for IIBSE Affiliation</p>
+    <h1>About IIBSE</h1>
+    <p>India International Board of Skills & Education</p>
 </header>
 
 <nav>
@@ -51,62 +42,38 @@
 </nav>
 
 <div class="container">
+    <h2>Who We Are</h2>
+    <p>
+        IIBSE (India International Board of Skills & Education) is an autonomous
+        skills education board registered under 
+        <strong>Ministry of Corporate Affairs (Section 8 – Govt. of India)</strong>.
+        Our mission is to bring modern, flexible, industry-based learning for schools,
+        colleges, and technical institutions.
+    </p>
 
-    <h2>Apply for Affiliation</h2>
-    <p>Fill the form below to get your school affiliated with IIBSE.</p>
+    <h2>Our Purpose</h2>
+    <ul>
+        <li>To establish a modern skill-based education framework</li>
+        <li>To affiliate schools & training institutes across India</li>
+        <li>To conduct examinations & issue certifications</li>
+        <li>To promote digital learning and automation</li>
+        <li>To reduce documentation burden & corruption in affiliation</li>
+    </ul>
 
-    <input id="school_name" placeholder="School Name" />
-    <input id="registration_no" placeholder="School Registration Number" />
-    <input id="principal_name" placeholder="Principal Name" />
-    <input id="email" type="email" placeholder="Official Email" />
-    <input id="phone" placeholder="Phone Number" />
-    <textarea id="address" placeholder="Full Address"></textarea>
-    <input id="city" placeholder="City" />
-    <input id="state" placeholder="State" />
-    <input id="pincode" placeholder="Pincode" />
+    <h2>Legal & Constitutional Base</h2>
+    <p>
+        IIBSE works under the rights granted by:
+        <br>
+        <strong>Article 19(1)(g), Article 29, Article 30,  
+        Article 14, Article 21A, Article 45, Article 46,  
+        Article 51A(h), and Article 300A.</strong>
+    </p>
 
-    <button onclick="submitAffiliation()">Submit Application</button>
-
-    <div id="response"></div>
 </div>
 
 <footer>
     © 2025 IIBSE | India International Board of Skills & Education
 </footer>
-
-<script>
-async function submitAffiliation() {
-
-    const data = {
-        school_name: document.getElementById("school_name").value,
-        registration_no: document.getElementById("registration_no").value,
-        principal_name: document.getElementById("principal_name").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        state: document.getElementById("state").value,
-        pincode: document.getElementById("pincode").value
-    };
-
-    const res = await fetch("https://iibse-backend.onrender.com/api/schools/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-    });
-
-    const result = await res.json();
-
-    if (result.error) {
-        document.getElementById("response").innerHTML =
-            `<p style='color:red'>❌ ${result.error}</p>`;
-    } else {
-        document.getElementById("response").innerHTML =
-            `<p style='color:green'>✔ Application Submitted Successfully!  
-             <br>Our team will contact you soon.</p>`;
-    }
-}
-</script>
 
 </body>
 </html>
