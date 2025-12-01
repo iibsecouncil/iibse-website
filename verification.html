@@ -1,122 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IIBSE | Student Verification</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IIBSE | Student Verification</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      padding: 20px;
-    }
+    <style>
+        body { margin:0; font-family: Arial; background:#f4f4f4; }
+        header { background:#002b5b; color:white; padding:20px; text-align:center; }
+        nav { background:#014f86; padding:10px; text-align:center; }
+        nav a { color:white; margin:12px; text-decoration:none; }
+        nav a:hover { border-bottom:2px solid white; }
 
-    .container {
-      max-width: 430px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+        .container {
+            max-width:600px;
+            margin:auto;
+            background:white;
+            padding:25px;
+            margin-top:25px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #1a237e;
-    }
+        input {
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:6px;
+            border:1px solid #bbb;
+            font-size:16px;
+        }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-      font-size: 16px;
-    }
+        button {
+            width:100%;
+            padding:12px;
+            background:#014f86;
+            border:none;
+            color:white;
+            border-radius:6px;
+            font-size:17px;
+            cursor:pointer;
+        }
 
-    button {
-      width: 100%;
-      background: #1a237e;
-      color: white;
-      padding: 12px;
-      margin-top: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+        button:hover { background:#002b5b; }
 
-    button:hover {
-      background: #000c57;
-    }
+        #result {
+            margin-top:20px;
+            padding:15px;
+            border-radius:6px;
+            background:#eef1ff;
+        }
 
-    #result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 6px;
-      background: #eef1ff;
-    }
+        .not-found { color:red; font-size:16px; }
+        .found { color:green; font-size:16px; }
 
-    .not-found {
-      color: red;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .found {
-      color: green;
-      font-weight: bold;
-    }
-  </style>
+        footer {
+            background:#002b5b;
+            color:white;
+            padding:15px;
+            text-align:center;
+            margin-top:40px;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container">
-    <h2>Student Verification</h2>
+
+<header>
+    <h1>Student Verification</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="affiliation.html">Affiliation</a>
+    <a href="courses.html">Courses</a>
+    <a href="examination.html">Examination</a>
+    <a href="verification.html">Verification</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+    <h2>Verify Student Record</h2>
+    <p>Enter the student registration number below to verify the record.</p>
 
     <input type="text" id="regno" placeholder="Enter Registration Number" />
-
     <button onclick="checkVerification()">Verify</button>
 
     <div id="result"></div>
-  </div>
+</div>
 
-  <script>
-    async function checkVerification() {
-      const reg = document.getElementById("regno").value.trim();
-      const output = document.getElementById("result");
+<footer>
+    © 2025 IIBSE | India International Board of Skills & Education
+</footer>
 
-      if (reg === "") {
+<script>
+async function checkVerification() {
+    const reg = document.getElementById("regno").value.trim();
+    const output = document.getElementById("result");
+
+    if (reg === "") {
         output.innerHTML = "<p class='not-found'>Please enter registration number</p>";
         return;
-      }
+    }
 
-      output.innerHTML = "<p>Checking...</p>";
+    output.innerHTML = "<p>Checking...</p>";
 
-      const apiUrl = "https://iibse-backend.onrender.com/api/verify?regno=" + reg;
+    const apiUrl = "https://iibse-backend.onrender.com/api/verify?regno=" + reg;
 
-      try {
+    try {
         const res = await fetch(apiUrl);
         const data = await res.json();
 
         if (data.status === "Not Found") {
-          output.innerHTML = "<p class='not-found'>❌ No record found</p>";
+            output.innerHTML = "<p class='not-found'>❌ No record found</p>";
         } else {
-          output.innerHTML = `
-            <p class="found">✔ Record Found</p>
-            <b>Name:</b> ${data.student.full_name}<br>
-            <b>Reg No:</b> ${data.student.student_id}<br>
-            <b>Class:</b> ${data.student.class}<br>
-            <b>Year of Passing:</b> ${data.student.year_of_passing}<br>
-            <b>School ID:</b> ${data.student.school_id}<br>
-          `;
+            output.innerHTML = `
+                <p class="found">✔ Record Found</p>
+                <b>Name:</b> ${data.student.full_name}<br>
+                <b>Reg No:</b> ${data.student.student_id}<br>
+                <b>Class:</b> ${data.student.class}<br>
+                <b>School ID:</b> ${data.student.school_id}<br>
+                <b>Year of Passing:</b> ${data.student.year_of_passing}<br>
+            `;
         }
-      } catch (err) {
+    } catch (err) {
         output.innerHTML = "<p class='not-found'>Server Error</p>";
-      }
     }
-  </script>
+}
+</script>
+
 </body>
 </html>
