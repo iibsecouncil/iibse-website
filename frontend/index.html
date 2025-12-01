@@ -1,22 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>IIBSE Home</title>
-  <link rel="stylesheet" href="../css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IIBSE – India International Board of Skills & Education</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #222;
+        }
+        header {
+            background: #002b5b;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        nav {
+            background: #014f86;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 12px;
+            font-size: 16px;
+        }
+        nav a:hover {
+            border-bottom: 2px solid #fff;
+        }
+        .hero {
+            background: #003566;
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background: #002b5b;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
-  <h1>Welcome to IIBSE</h1>
-</header>
+    <!-- HEADER -->
+    <header>
+        <h1>IIBSE – India International Board of Skills & Education</h1>
+        <p>Autonomous Skills & Education Board (Section 8 – MCA Registered)</p>
+    </header>
 
-<div class="container">
-  <h2>Frontend Connected Successfully ✔</h2>
-  <button onclick="testAPI()">Test API</button>
-</div>
+    <!-- NAVBAR -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="affiliation.html">Affiliation</a>
+        <a href="courses.html">Courses</a>
+        <a href="examination.html">Examination</a>
+        <a href="verification.html">Verification</a>
+        <a href="contact.html">Contact</a>
+    </nav>
 
-<script src="../js/app.js"></script>
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <h1>Welcome to IIBSE</h1>
+        <p>Modern Digital Education & Skills Board – Fully Automated</p>
+    </div>
+
+    <!-- MAIN BOX -->
+    <div class="container">
+        <h2>Frontend Connected Successfully ✔</h2>
+        <p>Your board website is running online.</p>
+
+        <button onclick="testAPI()"
+        style="padding:10px 20px; background:#014f86; color:white; border:none; border-radius:5px; cursor:pointer;">
+            Test API Connection
+        </button>
+
+        <p id="apiResult" style="margin-top:20px; color:green;"></p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2025 IIBSE | India International Board of Skills & Education  
+    </footer>
+
+    <!-- JS FILE -->
+    <script src="./js/app.js"></script>
+
+    <script>
+        async function testAPI() {
+            try {
+                const res = await fetch("https://iibse-backend.onrender.com/test");
+                const data = await res.text();
+                document.getElementById("apiResult").innerHTML = data;
+            } catch (error) {
+                document.getElementById("apiResult").innerHTML =
+                    "Backend not reachable ❌";
+            }
+        }
+    </script>
+
 </body>
 </html>
