@@ -1,5 +1,3 @@
-// backend/index.js
-// Full backend server for IIBSE (copy-paste this file to replace your existing backend/index.js)
 
 // ------------------------------
 // Imports & Setup
@@ -267,6 +265,90 @@ app.post("/api/admin/schools/approve", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+// ------------------------------------------
+// 4️⃣ APPROVE SCHOOL
+// ------------------------------------------
+app.post("/api/schools/approve/:id", async (req, res) => {
+  const schoolId = req.params.id;
+
+  const { data, error } = await supabase
+    .from("schools")
+    .update({ affiliation_status: "Approved" })
+    .eq("id", schoolId)
+    .select();
+
+  if (error)
+    return res.status(500).json({ error: error.message });
+
+  res.json({
+    message: "School Approved Successfully ✔",
+    school: data[0],
+  });
+});
+
+// ------------------------------------------
+// 5️⃣ REJECT SCHOOL
+// ------------------------------------------
+app.post("/api/schools/reject/:id", async (req, res) => {
+  const schoolId = req.params.id;
+
+  const { data, error } = await supabase
+    .from("schools")
+    .update({ affiliation_status: "Rejected" })
+    .eq("id", schoolId)
+    .select();
+
+  if (error)
+    return res.status(500).json({ error: error.message });
+
+  res.json({
+    message: "School Rejected ❌",
+    school: data[0],
+  });
+});
+
+// ------------------------------------------
+// 6️⃣ LIST PENDING SCHOOLS
+// ------------------------------------------
+app.get("/api/schools/pending", async (req, res) => {
+  const { data, error } = await supabase
+    .from("schools")
+    .select("*")
+    .eq("affiliation_status", "Pending");
+
+  if (error)
+    return res.status(500).json({ error: error.message });
+
+  res.json(data);
+});
+
+// ------------------------------------------
+// 7️⃣ TOTAL SCHOOLS COUNT
+// ------------------------------------------
+app.get("/api/schools/count", async (req, res) => {
+  const { count, error } = await supabase
+    .from("schools")
+    .select("*", { count: "exact", head: true });
+
+  if (error)
+    return res.status(500).json({ error: error.message });
+
+  res.json({ count });
+});
+
+// ------------------------------------------
+// 8️⃣ TOTAL STUDENTS COUNT
+// ------------------------------------------
+app.get("/api/students/count", async (req, res) => {
+  const { count, error } = await supabase
+    .from("students")
+    .select("*", { count: "exact", head: true });
+
+  if (error)
+    return res.status(500).json({ error: error.message });
+
+  res.json({ count });
 });
 
 // ------------------------------------------
