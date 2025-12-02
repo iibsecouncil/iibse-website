@@ -6,7 +6,8 @@ async function verifyStudent() {
     return;
   }
 
-  const url = `https://iibse-backend.onrender.com/api/students/verify/${studentId}`;
+  https://iibse-backend.onrender.com
+
 
   try {
     const response = await fetch(url);
