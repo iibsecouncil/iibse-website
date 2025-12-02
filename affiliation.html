@@ -131,6 +131,48 @@ async function submitAffiliation() {
     }
 }
 </script>
+<script>
+// 🔗 Backend API URL
+const API_BASE = "https://iibse-backend.onrender.com";
 
+// 📌 School Registration Submit Function
+async function submitSchoolForm() {
+    const school_name = document.getElementById("school_name").value;
+    const registration_no = document.getElementById("registration_no").value;
+    const principal_name = document.getElementById("principal_name").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const address = document.getElementById("address").value;
+    const city = document.getElementById("city").value;
+    const state = document.getElementById("state").value;
+    const pincode = document.getElementById("pincode").value;
+
+    const body = {
+        school_name,
+        registration_no,
+        principal_name,
+        email,
+        phone,
+        address,
+        city,
+        state,
+        pincode
+    };
+
+    const res = await fetch(`${API_BASE}/api/schools/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+        alert("❌ ERROR: " + data.error);
+    } else {
+        alert("✅ School Registered Successfully!");
+    }
+}
+</script>
 </body>
 </html>
