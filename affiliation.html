@@ -78,32 +78,56 @@
 async function submitAffiliation() {
 
     const data = {
-        school_name: document.getElementById("school_name").value,
-        registration_no: document.getElementById("registration_no").value,
-        principal_name: document.getElementById("principal_name").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        state: document.getElementById("state").value,
-        pincode: document.getElementById("pincode").value
+        school_name: school_name.value.trim(),
+        registration_no: registration_no.value.trim(),
+        principal_name: principal_name.value.trim(),
+        email: email.value.trim(),
+        phone: phone.value.trim(),
+        address: address.value.trim(),
+        city: city.value.trim(),
+        state: state.value.trim(),
+        pincode: pincode.value.trim()
     };
 
-    const res = await fetch("https://iibse-backend.onrender.com/api/schools/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-    });
-
-    const result = await res.json();
-
-    if (result.error) {
+    // Basic validation
+    if (!data.school_name || !data.registration_no || !data.principal_name ||
+        !data.email || !data.phone || !data.address || !data.city || !data.state || !data.pincode) {
         document.getElementById("response").innerHTML =
-            `<p style='color:red'>❌ ${result.error}</p>`;
-    } else {
+        `<p style="color:red">❌ All fields are required.</p>`;
+        return;
+    }
+
+    try {
+        const res = await fetch("https://iibse-backend.onrender.com/api/schools/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (!res.ok || result.error) {
+            document.getElementById("response").innerHTML =
+                `<p style='color:red'>❌ ${result.error || "Submission failed"}</p>`;
+        } else {
+            document.getElementById("response").innerHTML =
+                `<p style='color:green'>✔ Application Submitted Successfully!  
+                 <br>Our team will contact you soon.</p>`;
+
+            // Clear form
+            school_name.value = "";
+            registration_no.value = "";
+            principal_name.value = "";
+            email.value = "";
+            phone.value = "";
+            address.value = "";
+            city.value = "";
+            state.value = "";
+            pincode.value = "";
+        }
+    } catch (error) {
         document.getElementById("response").innerHTML =
-            `<p style='color:green'>✔ Application Submitted Successfully!  
-             <br>Our team will contact you soon.</p>`;
+            `<p style='color:red'>❌ Network Error. Try again.</p>`;
     }
 }
 </script>
