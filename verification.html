@@ -129,6 +129,43 @@ async function checkVerification() {
     }
 }
 </script>
+<script>
+const API_BASE = "https://iibse-backend.onrender.com";
+
+// 🔍 Student Verification Function
+async function verifyStudent() {
+    const studentId = document.getElementById("student_id").value;
+
+    if (!studentId) {
+        alert("Please enter Student ID");
+        return;
+    }
+
+    // API Request
+    const res = await fetch(`${API_BASE}/api/students/verify?id=${studentId}`);
+    const data = await res.json();
+
+    const resultBox = document.getElementById("verifyResult");
+
+    if (data.error) {
+        resultBox.innerHTML = `
+            <p style="color:red; font-weight:bold;">❌ No record found</p>
+        `;
+    } else {
+        resultBox.innerHTML = `
+            <div style="padding:10px; border:1px solid #0a0; border-radius:6px;">
+                <h3>✔ Student Verified</h3>
+                <p><b>Name:</b> ${data.full_name}</p>
+                <p><b>Father Name:</b> ${data.father_name}</p>
+                <p><b>Mother Name:</b> ${data.mother_name}</p>
+                <p><b>Class:</b> ${data.class}</p>
+                <p><b>Roll No:</b> ${data.roll_no}</p>
+                <p><b>Year of Passing:</b> ${data.year_of_passing}</p>
+            </div>
+        `;
+    }
+}
+</script>
 
 </body>
 </html>
