@@ -402,6 +402,29 @@ app.get("/api/stats/approved-schools", async (req, res) => {
   if (error) return res.status(500).json({ error: error.message });
   res.json({ count: data.length });
 });
+// ------------------------------------------
+// STUDENT VERIFICATION API
+// ------------------------------------------
+app.get("/api/students/verify", async (req, res) => {
+  const studentId = req.query.id;
+
+  if (!studentId)
+    return res.status(400).json({ error: "Student ID missing" });
+
+  const { data, error } = await supabase
+    .from("students")
+    .select("*")
+    .eq("student_id", studentId)
+    .limit(1);
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  if (!data || data.length === 0) {
+    return res.status(404).json({ error: "No student found" });
+  }
+
+  return res.json(data[0]);
+});
 
 // ------------------------------------------
 // START SERVER
