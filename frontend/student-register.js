@@ -1,4 +1,5 @@
-const API_BASE = "https://iibse-backend.onrender.com";
+https://iibse-backend.onrender.com
+
 
 document.getElementById("studentForm").addEventListener("submit", async function(e) {
     e.preventDefault();
