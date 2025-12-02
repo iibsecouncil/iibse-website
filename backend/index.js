@@ -357,6 +357,51 @@ app.get("/api/students/count", async (req, res) => {
 
   res.json({ count });
 });
+// ------------------------------------------
+// ADMIN DASHBOARD STATS APIs
+// ------------------------------------------
+
+// 1️⃣ Total Schools Count
+app.get("/api/stats/total-schools", async (req, res) => {
+  const { count, error } = await supabase
+    .from("schools")
+    .select("*", { count: "exact", head: true });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ count });
+});
+
+// 2️⃣ Total Students Count
+app.get("/api/stats/total-students", async (req, res) => {
+  const { count, error } = await supabase
+    .from("students")
+    .select("*", { count: "exact", head: true });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ count });
+});
+
+// 3️⃣ Pending Schools
+app.get("/api/stats/pending-schools", async (req, res) => {
+  const { data, error } = await supabase
+    .from("schools")
+    .select("*")
+    .eq("affiliation_status", "Pending");
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ count: data.length });
+});
+
+// 4️⃣ Approved Schools
+app.get("/api/stats/approved-schools", async (req, res) => {
+  const { data, error } = await supabase
+    .from("schools")
+    .select("*")
+    .eq("affiliation_status", "Approved");
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ count: data.length });
+});
 
 // ------------------------------------------
 // START SERVER
