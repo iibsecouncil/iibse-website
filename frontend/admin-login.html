@@ -1,72 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Admin Login - IIBSE</title>
-  <link rel="stylesheet" href="./css/style.css" />
-  <style>
-    body { font-family: Arial; background: #f5f7ff; }
-    .box { width: 400px; margin: 120px auto; padding: 25px; background: #fff; border-radius: 10px; 
-        box-shadow: 0 0 12px rgba(0,0,0,0.1); }
-    input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #aaa; border-radius: 6px; }
-    button { width: 100%; padding: 12px; background: #4a5eff; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #223bff; }
-    .error { color: red; margin-top: 8px; }
-  </style>
-</head>
-
-<body>
-
-  <div class="box">
-    <h2>Admin Login</h2>
-
-    <input type="text" id="username" placeholder="Enter Username" />
-    <input type="password" id="password" placeholder="Enter Password" />
-
-    <button onclick="adminLogin()">Login</button>
-
-    <p id="msg" class="error"></p>
-  </div>
-
 <script>
-const backend = "https://iibse-backend.onrender.com";
+const API_BASE = "https://iibse-backend.onrender.com";
 
 async function adminLogin() {
-    const user = document.getElementById("username").value.trim();
-    const pass = document.getElementById("password").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
     const msg = document.getElementById("msg");
 
-    msg.innerHTML = "";
+    msg.innerHTML = "Checking...";
 
-    if (!user || !pass) {
-        msg.innerHTML = "All fields required!";
+    const res = await fetch(`${API_BASE}/api/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        msg.style.color = "red";
+        msg.innerHTML = "❌ Invalid login!";
         return;
     }
 
-    try {
-        const res = await fetch(`${backend}/api/admin/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: user, password: pass })
-        });
+    // ⭐ Save admin token
+    localStorage.setItem("admin_id", data.admin_id);
+    localStorage.setItem("admin_username", username);
 
-        const data = await res.json();
+    msg.style.color = "green";
+    msg.innerHTML = "✔ Login successful! Redirecting...";
 
-        if (!res.ok) {
-            msg.innerHTML = data.error || "Login failed";
-            return;
-        }
-
-        // Save token & redirect
-        localStorage.setItem("adminToken", data.token);
-
+    setTimeout(() => {
         window.location.href = "./admin/dashboard.html";
-
-    } catch (error) {
-        msg.innerHTML = "Server Not Responding";
-    }
+    }, 1000);
 }
 </script>
-
-</body>
-</html>
