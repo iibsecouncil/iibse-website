@@ -1,106 +1,61 @@
-const backend = "https://iibse-backend.onrender.com";
+const API_BASE = "https://iibse-backend.onrender.com";
 
-// -------------------------
-// Check Login Token
-// -------------------------
-const token = localStorage.getItem("adminToken");
-if (!token) window.location.href = "../admin-login.html";
+// Check login
+const admin_id = localStorage.getItem("admin_id");
+if (!admin_id) {
+    window.location.href = "../admin-login.html";
+}
 
-// ----------------------------
 // Load Pending Schools
-// ----------------------------
-async function loadPending() {
+async function loadPendingSchools() {
     const table = document.getElementById("school-table");
     table.innerHTML = "<tr><td colspan='6'>Loading...</td></tr>";
 
-    try {
-        const res = await fetch(`${backend}/api/schools/pending`, {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
+    const res = await fetch(`${API_BASE}/api/schools/pending`);
+    const data = await res.json();
 
-        const data = await res.json();
+    table.innerHTML = "";
 
-        if (!res.ok) {
-            table.innerHTML = "<tr><td colspan='6'>Failed to load</td></tr>";
-            return;
-        }
+    if (data.length === 0) {
+        table.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No Pending Schools</td></tr>";
+        return;
+    }
 
-        if (!data || data.length === 0) {
-            table.innerHTML = "<tr><td colspan='6'>No Pending Schools</td></tr>";
-            return;
-        }
-
-        table.innerHTML = "";
-
-        data.forEach(school => {
-            table.innerHTML += `
-                <tr>
-                  <td>${school.school_name}</td>
-                  <td>${school.registration_no}</td>
-                  <td>${school.principal_name}</td>
-                  <td>${school.phone}</td>
-                  <td>${school.affiliation_status}</td>
-
-                  <td>
+    data.forEach(school => {
+        table.innerHTML += `
+            <tr>
+                <td>${school.school_name}</td>
+                <td>${school.registration_no}</td>
+                <td>${school.principal_name}</td>
+                <td>${school.phone}</td>
+                <td>${school.affiliation_status}</td>
+                <td>
                     <button class="approve" onclick="approveSchool('${school.id}')">Approve</button>
                     <button class="reject" onclick="rejectSchool('${school.id}')">Reject</button>
-                  </td>
-                </tr>
-            `;
-        });
-
-    } catch (err) {
-        table.innerHTML = "<tr><td colspan='6'>Server Error</td></tr>";
-    }
+                </td>
+            </tr>
+        `;
+    });
 }
 
-// Load pending data on page open
-loadPending();
-
-// ----------------------------
-// Approve School
-// ----------------------------
+// Approve
 async function approveSchool(id) {
-    try {
-        const res = await fetch(`${backend}/api/schools/approve/${id}`, {
-            method: "POST",
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-
-        if (!res.ok) {
-            console.error("Approve failed");
-        }
-
-        loadPending();
-    } catch (err) {
-        console.error("Network error (approve):", err);
-    }
+    await fetch(`${API_BASE}/api/schools/approve/${id}`, { method: "POST" });
+    alert("✔ Approved");
+    loadPendingSchools();
 }
 
-// ----------------------------
-// Reject School
-// ----------------------------
+// Reject
 async function rejectSchool(id) {
-    try {
-        const res = await fetch(`${backend}/api/schools/reject/${id}`, {
-            method: "POST",
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-
-        if (!res.ok) {
-            console.error("Reject failed");
-        }
-
-        loadPending();
-    } catch (err) {
-        console.error("Network error (reject):", err);
-    }
+    await fetch(`${API_BASE}/api/schools/reject/${id}`, { method: "POST" });
+    alert("❌ Rejected");
+    loadPendingSchools();
 }
 
-// ----------------------------
 // Logout
-// ----------------------------
 function logout() {
-    localStorage.removeItem("adminToken");
+    localStorage.clear();
     window.location.href = "../admin-login.html";
 }
+
+loadPendingSchools();
