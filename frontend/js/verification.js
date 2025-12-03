@@ -6,29 +6,31 @@ async function verifyStudent() {
     return;
   }
 
-  https://iibse-backend.onrender.com
-
+  const url = "https://iibse-backend.onrender.com/verify";
 
   try {
-    const response = await fetch(url);
-    const data = await response.json();
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ roll_no: studentId })
+    });
 
+    const data = await response.json();
     const resultBox = document.getElementById("result");
 
-    if (data.error) {
-      resultBox.innerHTML = `<p class="error">❌ ${data.error}</p>`;
+    if (!data.success) {
+      resultBox.innerHTML = `<p class="error">❌ No record found</p>`;
     } else {
+      const s = data.student;
       resultBox.innerHTML = `
         <p class="success">✔ Verified Successfully</p>
-        <p><strong>Name:</strong> ${data.full_name}</p>
-        <p><strong>Father:</strong> ${data.father_name}</p>
-        <p><strong>School ID:</strong> ${data.school_id}</p>
-        <p><strong>Class:</strong> ${data.class}</p>
-        <p><strong>Passing Year:</strong> ${data.year_of_passing}</p>
+        <p><strong>Name:</strong> ${s.student_name}</p>
+        <p><strong>Course:</strong> ${s.course}</p>
+        <p><strong>Batch:</strong> ${s.batch_year}</p>
+        <p><strong>Roll No:</strong> ${s.roll_no}</p>
       `;
     }
   } catch (err) {
     alert("Server error! Try again later.");
   }
 }
-
