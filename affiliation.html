@@ -62,6 +62,10 @@
     <textarea id="address" placeholder="Full Address"></textarea>
     <input id="city" placeholder="District / City" />
 
+    <!-- ⭐ NEW DOCUMENT UPLOAD FIELD -->
+    <label>Upload Document (PDF / JPG / PNG)</label>
+    <input type="file" id="document" accept=".pdf,.jpg,.jpeg,.png" />
+
     <button onclick="submitAffiliation()">Submit Application</button>
 
     <div id="response"></div>
@@ -71,9 +75,29 @@
     © 2025 IIBSE | India International Board of Skills & Education
 </footer>
 
-<!-- FINAL WORKING AFFILIATION JS -->
+<!-- ⭐ FINAL WORKING CLOUDINARY + BACKEND CODE -->
 <script>
 async function submitAffiliation() {
+    const fileInput = document.getElementById("document");
+    let uploadedFileURL = "N/A";
+
+    // 1) Upload file to Cloudinary
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "iibse_uploads");
+
+        const cloudRes = await fetch("https://api.cloudinary.com/v1_1/dnztypexs/auto/upload", {
+            method: "POST",
+            body: formData
+        });
+
+        const cloudData = await cloudRes.json();
+        uploadedFileURL = cloudData.secure_url;
+    }
+
+    // 2) Form data
     const data = {
         institute_name: document.getElementById("school_name").value.trim(),
         owner_name: document.getElementById("principal_name").value.trim(),
@@ -81,15 +105,17 @@ async function submitAffiliation() {
         phone: document.getElementById("phone").value.trim(),
         address: document.getElementById("address").value.trim(),
         district: document.getElementById("city").value.trim(),
-        document_url: "N/A"
+        document_url: uploadedFileURL
     };
 
+    // 3) Validation
     if (!data.institute_name || !data.owner_name || !data.email || !data.phone || !data.address || !data.district) {
         document.getElementById("response").innerHTML =
         `<p style="color:red">❌ All fields are required.</p>`;
         return;
     }
 
+    // 4) Send to backend
     try {
         const res = await fetch("https://iibse-backend.onrender.com/affiliation", {
             method: "POST",
@@ -102,15 +128,16 @@ async function submitAffiliation() {
         if (result.success) {
             document.getElementById("response").innerHTML =
             `<p style='color:green'>✔ Application Submitted Successfully!  
-            <br>Our team will contact you soon.</p>`;
+            <br>Document uploaded & saved.</p>`;
 
-            // CLEAR FORM
+            // Clear form
             document.getElementById("school_name").value = "";
             document.getElementById("principal_name").value = "";
             document.getElementById("email").value = "";
             document.getElementById("phone").value = "";
             document.getElementById("address").value = "";
             document.getElementById("city").value = "";
+            fileInput.value = "";
         } 
         else {
             document.getElementById("response").innerHTML =
