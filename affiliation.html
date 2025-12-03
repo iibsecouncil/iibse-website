@@ -55,15 +55,12 @@
     <h2>Apply for Affiliation</h2>
     <p>Fill the form below to get your school affiliated with IIBSE.</p>
 
-    <input id="school_name" placeholder="School Name" />
-    <input id="registration_no" placeholder="School Registration Number" />
-    <input id="principal_name" placeholder="Principal Name" />
+    <input id="school_name" placeholder="School / Institute Name" />
+    <input id="principal_name" placeholder="Owner / Principal Name" />
     <input id="email" type="email" placeholder="Official Email" />
     <input id="phone" placeholder="Phone Number" />
     <textarea id="address" placeholder="Full Address"></textarea>
-    <input id="city" placeholder="City" />
-    <input id="state" placeholder="State" />
-    <input id="pincode" placeholder="Pincode" />
+    <input id="city" placeholder="District / City" />
 
     <button onclick="submitAffiliation()">Submit Application</button>
 
@@ -74,105 +71,58 @@
     © 2025 IIBSE | India International Board of Skills & Education
 </footer>
 
+<!-- FINAL WORKING AFFILIATION JS -->
 <script>
 async function submitAffiliation() {
-
     const data = {
-        school_name: school_name.value.trim(),
-        registration_no: registration_no.value.trim(),
-        principal_name: principal_name.value.trim(),
-        email: email.value.trim(),
-        phone: phone.value.trim(),
-        address: address.value.trim(),
-        city: city.value.trim(),
-        state: state.value.trim(),
-        pincode: pincode.value.trim()
+        institute_name: document.getElementById("school_name").value.trim(),
+        owner_name: document.getElementById("principal_name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        district: document.getElementById("city").value.trim(),
+        document_url: "N/A"
     };
 
-    // Basic validation
-    if (!data.school_name || !data.registration_no || !data.principal_name ||
-        !data.email || !data.phone || !data.address || !data.city || !data.state || !data.pincode) {
+    if (!data.institute_name || !data.owner_name || !data.email || !data.phone || !data.address || !data.district) {
         document.getElementById("response").innerHTML =
         `<p style="color:red">❌ All fields are required.</p>`;
         return;
     }
 
     try {
-        const res = await fetch("https://iibse-backend.onrender.com/api/schools/register", {
+        const res = await fetch("https://iibse-backend.onrender.com/affiliation", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         });
 
         const result = await res.json();
 
-        if (!res.ok || result.error) {
+        if (result.success) {
             document.getElementById("response").innerHTML =
-                `<p style='color:red'>❌ ${result.error || "Submission failed"}</p>`;
-        } else {
-            document.getElementById("response").innerHTML =
-                `<p style='color:green'>✔ Application Submitted Successfully!  
-                 <br>Our team will contact you soon.</p>`;
+            `<p style='color:green'>✔ Application Submitted Successfully!  
+            <br>Our team will contact you soon.</p>`;
 
-            // Clear form
-            school_name.value = "";
-            registration_no.value = "";
-            principal_name.value = "";
-            email.value = "";
-            phone.value = "";
-            address.value = "";
-            city.value = "";
-            state.value = "";
-            pincode.value = "";
+            // CLEAR FORM
+            document.getElementById("school_name").value = "";
+            document.getElementById("principal_name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("address").value = "";
+            document.getElementById("city").value = "";
+        } 
+        else {
+            document.getElementById("response").innerHTML =
+            `<p style='color:red'>❌ Submission failed.</p>`;
         }
-    } catch (error) {
+
+    } catch (err) {
         document.getElementById("response").innerHTML =
-            `<p style='color:red'>❌ Network Error. Try again.</p>`;
+        `<p style='color:red'>❌ Server Error. Try again.</p>`;
     }
 }
 </script>
-<script>
-// 🔗 Backend API URL
-const API_BASE = "https://iibse-backend.onrender.com";
 
-// 📌 School Registration Submit Function
-async function submitSchoolForm() {
-    const school_name = document.getElementById("school_name").value;
-    const registration_no = document.getElementById("registration_no").value;
-    const principal_name = document.getElementById("principal_name").value;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value;
-    const address = document.getElementById("address").value;
-    const city = document.getElementById("city").value;
-    const state = document.getElementById("state").value;
-    const pincode = document.getElementById("pincode").value;
-
-    const body = {
-        school_name,
-        registration_no,
-        principal_name,
-        email,
-        phone,
-        address,
-        city,
-        state,
-        pincode
-    };
-
-    const res = await fetch(`${API_BASE}/api/schools/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    });
-
-    const data = await res.json();
-
-    if (data.error) {
-        alert("❌ ERROR: " + data.error);
-    } else {
-        alert("✅ School Registered Successfully!");
-    }
-}
-</script>
 </body>
 </html>
