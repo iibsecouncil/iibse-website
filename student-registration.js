@@ -1,7 +1,7 @@
-// ⭐ Backend URL — Render Web Service
+// ⭐ Backend URL — your Render Web Service
 const API_BASE_URL = "https://iibse-backend.onrender.com";
 
-// ⭐ Handle Form Submit
+// Listen for form submission
 document.getElementById("studentForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -9,30 +9,20 @@ document.getElementById("studentForm").addEventListener("submit", async function
     msg.innerHTML = "Submitting, please wait...";
     msg.style.color = "blue";
 
-    // ⭐ Collect Form Data
+    // Collect form data
     const data = {
-        full_name: document.getElementById("full_name").value.trim(),
-        father_name: document.getElementById("father_name").value.trim(),
-        mother_name: document.getElementById("mother_name").value.trim(),
+        full_name: document.getElementById("full_name").value,
+        father_name: document.getElementById("father_name").value,
+        mother_name: document.getElementById("mother_name").value,
         dob: document.getElementById("dob").value,
         gender: document.getElementById("gender").value,
-        school_id: document.getElementById("school_id").value.trim(),
-        class_name: document.getElementById("class_name").value.trim(),
-        student_id: document.getElementById("student_id").value.trim(),
-        roll_no: document.getElementById("roll_no").value.trim(),
-        year_of_passing: document.getElementById("year_of_passing").value.trim()
+        school_id: document.getElementById("school_id").value,
+        class_name: document.getElementById("class_name").value,
+        student_id: document.getElementById("student_id").value,
+        roll_no: document.getElementById("roll_no").value,
+        year_of_passing: document.getElementById("year_of_passing").value
     };
 
-    // ⭐ Validate empty fields
-    for (let key in data) {
-        if (!data[key]) {
-            msg.innerHTML = `⚠ Missing field: ${key.replace("_", " ")}`;
-            msg.style.color = "red";
-            return;
-        }
-    }
-
-    // ⭐ Send data to backend
     try {
         const response = await fetch(`${API_BASE_URL}/api/student-register`, {
             method: "POST",
@@ -51,9 +41,9 @@ document.getElementById("studentForm").addEventListener("submit", async function
             msg.style.color = "red";
         }
 
-    } catch (err) {
+    } catch (error) {
         msg.innerHTML = "❌ Network Error: Backend not reachable";
         msg.style.color = "red";
-        console.error(err);
+        console.error("Error:", error);
     }
 });
