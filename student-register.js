@@ -1,6 +1,5 @@
-// ⭐ BACKEND URL — CHANGE THIS ONLY
-const API_BASE_URL = "https://YOUR_BACKEND_URL_HERE.com";  
-// Example: https://iibse-backend.onrender.com
+// ⭐ Backend URL — your Render Web Service
+const API_BASE_URL = "https://iibse-backend.onrender.com";
 
 document.getElementById("studentForm").addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -23,13 +22,6 @@ document.getElementById("studentForm").addEventListener("submit", async function
         year_of_passing: document.getElementById("year_of_passing").value
     };
 
-    // If backend URL not set
-    if (API_BASE_URL.includes("YOUR_BACKEND_URL_HERE")) {
-        msg.innerHTML = "⚠ Backend URL missing. Please update JS file.";
-        msg.style.color = "red";
-        return;
-    }
-
     try {
         const response = await fetch(`${API_BASE_URL}/api/student-register`, {
             method: "POST",
@@ -44,13 +36,13 @@ document.getElementById("studentForm").addEventListener("submit", async function
             msg.style.color = "green";
             document.getElementById("studentForm").reset();
         } else {
-            msg.innerHTML = "❌ Server Error: " + (result.message || "Unable to register");
+            msg.innerHTML = "❌ Error: " + (result.message || "Unable to register");
             msg.style.color = "red";
         }
 
     } catch (err) {
         msg.innerHTML = "❌ Network Error: Backend not reachable";
         msg.style.color = "red";
-        console.error(err);
+        console.error("Error:", err);
     }
 });
