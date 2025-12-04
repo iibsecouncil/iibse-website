@@ -23,16 +23,16 @@ document.getElementById("studentForm").addEventListener("submit", async function
         year_of_passing: document.getElementById("year_of_passing").value.trim()
     };
 
-    // ⭐ Basic Validation
+    // ⭐ Validate empty fields
     for (let key in data) {
         if (!data[key]) {
-            msg.innerHTML = `⚠ Please fill all fields. Missing: ${key.replace("_", " ")}`;
+            msg.innerHTML = `⚠ Missing field: ${key.replace("_", " ")}`;
             msg.style.color = "red";
             return;
         }
     }
 
-    // ⭐ Send Data to Backend
+    // ⭐ Send data to backend
     try {
         const response = await fetch(`${API_BASE_URL}/api/student-register`, {
             method: "POST",
@@ -42,24 +42,18 @@ document.getElementById("studentForm").addEventListener("submit", async function
 
         const result = await response.json();
 
-        // ⭐ If Success
         if (response.ok) {
             msg.innerHTML = "✅ Student Registered Successfully!";
             msg.style.color = "green";
-
-            // Clear form
             document.getElementById("studentForm").reset();
-        }
-        // ⭐ If Error comes from backend
-        else {
+        } else {
             msg.innerHTML = "❌ Error: " + (result.message || "Unable to register");
             msg.style.color = "red";
         }
-    } 
-    // ⭐ Network / CORS Error
-    catch (err) {
-        console.error("Error:", err);
+
+    } catch (err) {
         msg.innerHTML = "❌ Network Error: Backend not reachable";
         msg.style.color = "red";
+        console.error(err);
     }
 });
