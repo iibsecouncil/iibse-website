@@ -1,1 +1,72 @@
+/* Global Style */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+/* Page Header */
+.page-header {
+    background: #004aad;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+/* Container Box */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+}
+
+/* Form Labels */
+form label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Input + Select Styling */
+form input, form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+}
+
+/* Submit Button */
+.submit-btn {
+    margin-top: 18px;
+    padding: 12px;
+    width: 100%;
+    background: #004aad;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+    background: #003580;
+}
+
+/* Response Message */
+#responseMsg {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+}
 
