@@ -1,9 +1,13 @@
-// 🌟 Replace with your Render backend URL
-const API_BASE_URL = "https://YOUR-BACKEND-URL.onrender.com";  
-// Example: const API_BASE_URL = "https://iibse-backend.onrender.com";
+// ⭐ BACKEND URL — CHANGE THIS ONLY
+const API_BASE_URL = "https://YOUR_BACKEND_URL_HERE.com";  
+// Example: https://iibse-backend.onrender.com
 
 document.getElementById("studentForm").addEventListener("submit", async function(e) {
     e.preventDefault();
+
+    const msg = document.getElementById("responseMsg");
+    msg.innerHTML = "Submitting, please wait...";
+    msg.style.color = "blue";
 
     // Collect form data
     const data = {
@@ -19,36 +23,34 @@ document.getElementById("studentForm").addEventListener("submit", async function
         year_of_passing: document.getElementById("year_of_passing").value
     };
 
-    // Show user that submission started
-    const msg = document.getElementById("responseMsg");
-    msg.innerHTML = "Submitting, please wait...";
-    msg.style.color = "blue";
+    // If backend URL not set
+    if (API_BASE_URL.includes("YOUR_BACKEND_URL_HERE")) {
+        msg.innerHTML = "⚠ Backend URL missing. Please update JS file.";
+        msg.style.color = "red";
+        return;
+    }
 
     try {
         const response = await fetch(`${API_BASE_URL}/api/student-register`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
         const result = await response.json();
 
         if (response.ok) {
-            msg.innerHTML = "Student Registered Successfully ✔";
+            msg.innerHTML = "✅ Student Registered Successfully!";
             msg.style.color = "green";
-
-            // Clear form after success
             document.getElementById("studentForm").reset();
         } else {
-            msg.innerHTML = "Error: " + (result.message || "Server error");
+            msg.innerHTML = "❌ Server Error: " + (result.message || "Unable to register");
             msg.style.color = "red";
         }
 
     } catch (err) {
-        msg.innerHTML = "Network Error: Unable to connect to server ❌";
+        msg.innerHTML = "❌ Network Error: Backend not reachable";
         msg.style.color = "red";
-        console.error("Error submitting form:", err);
+        console.error(err);
     }
 });
