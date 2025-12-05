@@ -1,71 +1,50 @@
-import express from "express";
-import cors from "cors";
-import { createClient } from "@supabase/supabase-js";
+// ⭐ FINAL IIBSE STUDENT REGISTRATION SCRIPT
+// Backend URL (Locked & Correct)
+const API_BASE_URL = "https://iibse-backend.onrender.com";
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+// Listen for form submit
+document.getElementById("studentForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-// SUPABASE CONNECTION
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+    const msg = document.getElementById("responseMsg");
+    msg.innerHTML = "Submitting... Please wait.";
+    msg.style.color = "blue";
 
-// ------------------ ROUTES ------------------ //
+    // Collect all inputs
+    const data = {
+        full_name: document.getElementById("full_name").value,
+        father_name: document.getElementById("father_name").value,
+        mother_name: document.getElementById("mother_name").value,
+        dob: document.getElementById("dob").value,
+        gender: document.getElementById("gender").value,
+        school_id: document.getElementById("school_id").value,
+        class_name: document.getElementById("class_name").value,
+        student_id: document.getElementById("student_id").value,
+        roll_no: document.getElementById("roll_no").value,
+        year_of_passing: document.getElementById("year_of_passing").value
+    };
 
-// 1) TEST ROUTE
-app.get("/", (req, res) => {
-  res.send("IIBSE Backend is running ✔️");
+    try {
+        const response = await fetch(`${API_BASE_URL}/student-register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            msg.innerHTML = "✅ Student Registered Successfully!";
+            msg.style.color = "green";
+            document.getElementById("studentForm").reset();
+        } else {
+            msg.innerHTML = "❌ Error: " + (result.message || "Registration failed");
+            msg.style.color = "red";
+        }
+
+    } catch (error) {
+        console.error(error);
+        msg.innerHTML = "❌ Network Error: Backend not reachable";
+        msg.style.color = "red";
+    }
 });
-
-// 2) VERIFY STUDENT
-app.post("/verify", async (req, res) => {
-  const { roll_no } = req.body;
-
-  const { data, error } = await supabase
-    .from("students")
-    .select("*")
-    .eq("roll_no", roll_no)
-    .single();
-
-  // Log
-  await supabase.from("verification_logs").insert({
-    roll_no,
-    status: data ? "found" : "not_found",
-    ip_address: req.ip,
-  });
-
-  if (error || !data) {
-    return res.status(404).json({ success: false, message: "No record found" });
-  }
-
-  return res.json({ success: true, student: data });
-});
-
-// 3) AFFILIATION FORM SUBMIT
-app.post("/affiliation", async (req, res) => {
-  const { institute_name, owner_name, phone, email, address, district, document_url } = req.body;
-
-  const { data, error } = await supabase.from("affiliation_requests").insert([
-    {
-      institute_name,
-      owner_name,
-      phone,
-      email,
-      address,
-      district,
-      document_url,
-    },
-  ]);
-
-  if (error) {
-    return res.status(400).json({ success: false, message: "Error", error });
-  }
-
-  return res.json({ success: true, message: "Affiliation submitted" });
-});
-
-// ------------------ START SERVER ------------------ //
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`IIBSE Backend running on port ${port}`));
