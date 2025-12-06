@@ -1,36 +1,21 @@
-<script>
-const API_BASE = "https://iibse-backend.onrender.com";
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Login - IIBSE</title><link rel="stylesheet" href="/css/style.css"></head>
+<body>
+<div class="header-top"><div class="brand">IIBSE – Admin</div></div>
+<div class="nav"><div class="links" style="max-width:1200px;margin:auto;"><a href="index.html">Home</a></div></div>
 
-async function adminLogin() {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const msg = document.getElementById("msg");
+<div class="container">
+  <div class="main-card">
+    <h2>Admin Login</h2>
+    <form id="adminLogin">
+      <input name="username" placeholder="Username" required>
+      <input name="password" type="password" placeholder="Password" required>
+      <button class="btn" type="submit">Login</button>
+    </form>
+  </div>
+  <div class="side-card"><h4>Help</h4><p>Contact support for admin access.</p></div>
+</div>
 
-    msg.innerHTML = "Checking...";
-
-    const res = await fetch(`${API_BASE}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-    });
-
-    const data = await res.json();
-
-    if (!data.success) {
-        msg.style.color = "red";
-        msg.innerHTML = "❌ Invalid login!";
-        return;
-    }
-
-    // ⭐ Save admin token
-    localStorage.setItem("admin_id", data.admin_id);
-    localStorage.setItem("admin_username", username);
-
-    msg.style.color = "green";
-    msg.innerHTML = "✔ Login successful! Redirecting...";
-
-    setTimeout(() => {
-        window.location.href = "./admin/dashboard.html";
-    }, 1000);
-}
-</script>
+<div class="footer">© 2025 IIBSE | Indian International Board of Skills Schools & Education</div>
+<script src="/js/main.js"></script>
+</body></html>
