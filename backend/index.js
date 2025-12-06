@@ -1,34 +1,24 @@
 import express from "express";
-import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
-app.use(express.json());
-app.use(cors());
+const PORT = process.env.PORT || 10000;
 
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Serve frontend located outside backend folder
-app.use(express.static(path.join(__dirname, "../frontend")));
+// 🔥 CORRECT PATH — backend/frontend
+const FRONTEND_PATH = path.join(__dirname, "frontend");
 
+// Serve frontend folder
+app.use(express.static(FRONTEND_PATH));
+
+// Default route → serve index.html
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "index.html"));
+    res.sendFile(path.join(FRONTEND_PATH, "index.html"));
 });
 
-app.post("/student-register", (req, res) => {
-    const data = req.body;
-    if (!data.full_name || !data.student_id) {
-        return res.status(400).json({
-            success: false,
-            message: "Missing required fields"
-        });
-    }
-    res.json({
-        success: true,
-        message: "Student registered successfully",
-        received: data
-    });
+app.listen(PORT, () => {
+    console.log(`IIBSE Backend running on PORT ${PORT}`);
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("IIBSE Backend running on PORT " + PORT));
