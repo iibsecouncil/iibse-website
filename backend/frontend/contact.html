@@ -1,131 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IIBSE | Contact Us</title>
-
-    <style>
-        body { margin:0; font-family: Arial; background:#f4f4f4; }
-        header { background:#002b5b; color:white; padding:20px; text-align:center; }
-        nav { background:#014f86; padding:10px; text-align:center; }
-        nav a { color:white; margin:12px; text-decoration:none; }
-        nav a:hover { border-bottom:2px solid white; }
-
-        .container {
-            max-width:600px;
-            margin:auto;
-            background:white;
-            padding:25px;
-            margin-top:25px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
-        }
-
-        input, textarea {
-            width:100%;
-            padding:12px;
-            margin:10px 0;
-            border-radius:6px;
-            border:1px solid #bbb;
-            font-size:16px;
-        }
-
-        button {
-            width:100%;
-            padding:12px;
-            background:#014f86;
-            border:none;
-            color:white;
-            border-radius:6px;
-            font-size:17px;
-            cursor:pointer;
-        }
-
-        button:hover { background:#002b5b; }
-
-        #response {
-            margin-top:20px;
-            padding:15px;
-            background:#eef1ff;
-            border-radius:6px;
-        }
-
-        footer {
-            background:#002b5b;
-            color:white;
-            padding:15px;
-            text-align:center;
-            margin-top:40px;
-        }
-    </style>
-</head>
-
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Contact - IIBSE</title><link rel="stylesheet" href="/css/style.css"></head>
 <body>
-
-<header>
-    <h1>Contact Us</h1>
-    <p>We are here to help you.</p>
-</header>
-
-<nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="affiliation.html">Affiliation</a>
-    <a href="courses.html">Courses</a>
-    <a href="examination.html">Examination</a>
-    <a href="verification.html">Verification</a>
-    <a href="contact.html">Contact</a>
-</nav>
+<div class="header-top"><div class="brand">IIBSE – Indian International Board of Skills Schools & Education</div></div>
+<div class="nav"><div class="links" style="max-width:1200px;margin:auto;"><a href="index.html">Home</a><a href="contact.html">Contact</a></div></div>
 
 <div class="container">
-
-    <h2>Send Us a Message</h2>
-
-    <input id="full_name" placeholder="Full Name" />
-    <input id="email" type="email" placeholder="Email Address" />
-    <input id="phone" placeholder="Phone Number" />
-    <input id="subject" placeholder="Subject" />
-    <textarea id="message" rows="4" placeholder="Write your message here..."></textarea>
-
-    <button onclick="sendMessage()">Send Message</button>
-
-    <div id="response"></div>
-
+  <div class="main-card">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <input name="name" type="text" placeholder="Your name" required>
+      <input name="email" type="email" placeholder="Email" required>
+      <input name="phone" type="text" placeholder="Phone">
+      <textarea name="message" placeholder="Message" rows="5" required></textarea>
+      <button class="btn" type="submit">Send Message</button>
+      <div id="contactMsg" class="msg"></div>
+    </form>
+  </div>
+  <div class="side-card">
+    <h4>Address</h4>
+    <p>DKNR Social Foundation, Rajola T-Basavakalyan, Bidar, Karnataka</p>
+  </div>
 </div>
 
-<footer>
-    © 2025 IIBSE | Indian International Board of Skillsschools & Education
-</footer>
-
-<script>
-async function sendMessage() {
-    const data = {
-        full_name: document.getElementById("full_name").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        subject: document.getElementById("subject").value,
-        message: document.getElementById("message").value,
-    };
-
-    const res = await fetch("https://iibse-backend.onrender.com/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-    });
-
-    const result = await res.json();
-
-    if (result.error) {
-        document.getElementById("response").innerHTML =
-            `<p style='color:red'>❌ ${result.error}</p>`;
-    } else {
-        document.getElementById("response").innerHTML =
-            `<p style='color:green'>✔ Message Sent Successfully!  
-             <br>We will contact you shortly.</p>`;
-    }
-}
-</script>
-
-</body>
-</html>
+<div class="footer">© 2025 IIBSE | Indian International Board of Skills Schools & Education</div>
+<script src="/js/main.js"></script>
+</body></html>
