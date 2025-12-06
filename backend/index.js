@@ -8,15 +8,15 @@ app.use(cors());
 
 const __dirname = path.resolve();
 
-// ⭐ Serve frontend correctly from root/frontend/
-app.use(express.static(path.join(__dirname, "../frontend")));
+// ⭐ Serve frontend from root/frontend folder
+app.use(express.static(path.join(__dirname, "frontend")));
 
-// Default route
+// ⭐ Default route → index.html
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "index.html"));
+    res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
-// API route
+// ⭐ Student Register API
 app.post("/student-register", (req, res) => {
     const data = req.body;
 
@@ -34,6 +34,5 @@ app.post("/student-register", (req, res) => {
     });
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`IIBSE Backend running on PORT ${PORT}`));
