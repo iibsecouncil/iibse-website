@@ -28,7 +28,7 @@
 
 <header>
     <h1>About IIBSE</h1>
-    <p>India International Board of Skills & Education</p>
+    <p>Indian International Board of Skillsschools & Education</p>
 </header>
 
 <nav>
@@ -44,10 +44,10 @@
 <div class="container">
     <h2>Who We Are</h2>
     <p>
-        IIBSE (India International Board of Skills & Education) is an autonomous
+        IIBSE (Indian International Board of Skillsschools & Education) & IIBSE Examination Council is an autonomous
         skills education board registered under 
         <strong>Ministry of Corporate Affairs (Section 8 – Govt. of India)</strong>.
-        Our mission is to bring modern, flexible, industry-based learning for schools,
+        Our mission is to bring modern & vedic education with flexible, industry-based learning for schools,
         colleges, and technical institutions.
     </p>
 
@@ -72,7 +72,7 @@
 </div>
 
 <footer>
-    © 2025 IIBSE | India International Board of Skills & Education
+    © 2025 IIBSE | Indian International Board of Skillsschools & Education
 </footer>
 
 </body>
