@@ -1,139 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IIBSE – Indian International Board of Skillsschools & Education</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIBSE | Indian International Board of Skills Schools & Education</title>
 
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href="/css/style.css" />
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            color: #222;
-        }
-        header {
-            background: #002b5b;
-            padding: 20px;
-            color: white;
-            text-align: center;
-        }
-        nav {
-            background: #014f86;
-            padding: 10px;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 12px;
-            font-size: 16px;
-        }
-        nav a:hover {
-            border-bottom: 2px solid #fff;
-        }
-        .hero {
-            background: #003566;
-            padding: 60px 20px;
-            text-align: center;
-            color: white;
-        }
-        .hero h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-        .hero p {
-            font-size: 18px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 25px;
-            margin-top: 25px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        footer {
-            background: #002b5b;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin-top: 40px;
-        }
-        footer a {
-            color: white;
-        }
-    </style>
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
-
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <h1>IIBSE – Indian International Board of Skillsschools & Education</h1>
-        <p>Autonomous Skillsschools & Education Board 
-            (Registered under Ministry of Corporate Affairs as Section 8 Organisaion)</p>
-    </header>
+  <!-- Header -->
+  <div class="header-top">
+    <div class="brand">IIBSE – Indian International Board of Skills Schools & Education</div>
+    <div class="tag">Autonomous Skills & Education Board (Section 8, MCA) — Modern Skills, Verified Certification</div>
+  </div>
 
-    <!-- NAVBAR -->
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="affiliation.html">Affiliation</a>
-        <a href="courses.html">Courses</a>
-        <a href="examination.html">Examination</a>
-        <a href="verification.html">Verification</a>
-        <a href="contact.html">Contact</a>
-        <a href="student-registration.html">Student Registration</a>
-    </nav>
+  <!-- Notification Bar (marquee-like) -->
+  <div class="notice-bar"><div class="marquee">Admissions open for 2025 | New vocational diploma courses launched | Contact: info@iibse.in</div></div>
 
-    <!-- HERO SECTION -->
-    <div class="hero">
-        <h1>Welcome to IIBSE</h1>
-        <p>Modern Digital Education & Skills Board – Fully Automated</p>
+  <!-- Nav -->
+  <div class="nav">
+    <div class="links" style="max-width:1200px;margin:auto;">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="affiliation.html">Affiliation</a>
+      <a href="courses.html">Courses</a>
+      <a href="examination.html">Examination</a>
+      <a href="verification.html">Verification</a>
+      <a href="contact.html">Contact</a>
+      <a href="student-registration.html">Student Registration</a>
+    </div>
+  </div>
+
+  <!-- Hero Slider -->
+  <div class="hero">
+    <div class="slider"></div>
+    <div class="slider-controls"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Left: main -->
+    <div class="main-card">
+      <h2>Welcome to IIBSE</h2>
+      <p style="color:#444;margin-top:8px;">Indian International Board of Skills Schools & Education (IIBSE) offers modern, skill-based education systems, verified certifications and digital tools for schools and institutions.</p>
+
+      <!-- photo + description grid -->
+      <div style="margin-top:18px;">
+        <h3 style="color:#003566">Programs & Activities</h3>
+        <div class="photo-grid"></div>
+      </div>
+
+      <!-- brief brochure text -->
+      <div style="margin-top:18px;">
+        <h3 style="color:#003566">What We Offer</h3>
+        <ul>
+          <li>School affiliation & curriculum for Nursery – 12th & Vocational Diploma.</li>
+          <li>Digital exam & verification platform for secure certifications.</li>
+          <li>Teacher training, skill labs, and industry tie-ups.</li>
+          <li>Affordable, scalable solutions for institutions of all sizes.</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- MAIN BOX -->
-    <div class="container">
-        <h2>Frontend Connected Successfully ✔</h2>
-        <p>Your board website is running online.</p>
+    <!-- Right: side cards -->
+    <div class="side-card">
+      <h3 style="color:#003566">Quick Actions</h3>
+      <p><a href="student-registration.html" class="btn">Register a Student</a></p>
+      <p><a href="affiliation.html" class="btn">Apply for Affiliation</a></p>
 
-        <button onclick="testAPI()"
-        style="padding:10px 20px; background:#014f86; color:white; border:none; border-radius:5px; cursor:pointer;">
-            Test API Connection
-        </button>
+      <hr style="margin:12px 0">
 
-        <p id="apiResult" style="margin-top:20px; color:green;"></p>
+      <h4>Contact</h4>
+      <p>Email: info@iibse.in<br/>Phone: +91 90000 12345</p>
     </div>
+  </div>
 
-    <!-- FOOTER -->
-    <footer>
-        © 2025 IIBSE | Indian International Board of Skillsschools & Education 
-        IIBSE Examination Council
-        <br />
-        <a href="student-registration.html">Student Registration</a>
-    </footer>
+  <div class="footer">© 2025 IIBSE | Indian International Board of Skills Schools & Education</div>
 
-    <!-- CORRECT JS FILE -->
-    <script src="js/main.js"></script>
-
-    <script>
-        async function testAPI() {
-            try {
-                const res = await fetch("https://iibse-backend.onrender.com/test");
-                const data = await res.text();
-                document.getElementById("apiResult").innerHTML = data;
-            } catch (error) {
-                document.getElementById("apiResult").innerHTML =
-                    "Backend not reachable ❌";
-            }
-        }
-    </script>
-
+  <script src="/js/main.js"></script>
 </body>
 </html>
