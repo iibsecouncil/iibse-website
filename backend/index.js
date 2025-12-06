@@ -6,18 +6,17 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Resolve current directory
 const __dirname = path.resolve();
 
-// ⭐ Serve Frontend Folder
-app.use(express.static(path.join(__dirname, "frontend")));
+// ⭐ Serve frontend correctly from root/frontend/
+app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Default route → serve frontend index.html
+// Default route
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend", "index.html"));
 });
 
-// ⭐ Student Register API
+// API route
 app.post("/student-register", (req, res) => {
     const data = req.body;
 
