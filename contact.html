@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact – IIBSE</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .contact-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #003b73;
+            margin-bottom: 20px;
+        }
+        .info-box p {
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+        textarea {
+            height: 130px;
+        }
+        .submit-btn {
+            margin-top: 20px;
+            background: #003b73;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header>
+    <div class="logo">IIBSE</div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="affiliation.html">Affiliation</a></li>
+            <li><a href="adviser.html">Adviser Registration</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a class="active" href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- CONTACT SECTION -->
+<section class="contact-container">
+
+    <h2>Contact Us</h2>
+
+    <div class="info-box">
+        <p><strong>Board Name:</strong> Indian International Board of Skills Schools & Education (IIBSE)</p>
+        <p><strong>Email:</strong> info@iibse.in</p>
+        <p><strong>Phone:</strong> +91 90080 52525</p>
+        <p><strong>Website:</strong> www.iibse.in</p>
+    </div>
+
+    <hr style="margin: 25px 0;">
+
+    <h2>Send Us a Message</h2>
+
+    <form id="contactForm">
+
+        <label>Your Name *</label>
+        <input type="text" name="name" required>
+
+        <label>Email *</label>
+        <input type="email" name="email" required>
+
+        <label>Message *</label>
+        <textarea name="message" required></textarea>
+
+        <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    © 2025 IIBSE – Indian International Board of Skills Schools & Education
+</footer>
+
+<script>
+    // Contact form handler
+    const contactForm = document.getElementById("contactForm");
+
+    if (contactForm) {
+        contactForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            alert("Your message has been sent! Our team will contact you shortly.");
+            contactForm.reset();
+        });
+    }
+</script>
+
+</body>
+</html>
