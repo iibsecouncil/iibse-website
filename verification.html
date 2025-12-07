@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Certificate Verification – IIBSE</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .verify-box {
+            max-width: 700px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .verify-box h2 {
+            color: #003b73;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 14px;
+            background: #003b73;
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header>
+    <div class="logo">IIBSE</div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="admission.html">Admission</a></li>
+            <li><a class="active" href="verification.html">Verification</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- VERIFICATION BOX -->
+<section class="verify-box">
+    <h2>Certificate Verification</h2>
+    <p>Enter the Certificate Number to verify the student's records.</p>
+
+    <input type="text" id="certificateInput" placeholder="Enter Certificate Number">
+
+    <button class="verify-btn" onclick="verifyCertificate()">Verify</button>
+
+    <div id="result" class="result-box"></div>
+</section>
+
+<footer>
+    © 2025 IIBSE – Indian International Board of Skills Schools & Education
+</footer>
+
+<script>
+function verifyCertificate() {
+    const cert = document.getElementById("certificateInput").value.trim();
+    const resultBox = document.getElementById("result");
+
+    if (cert === "") {
+        resultBox.style.display = "block";
+        resultBox.className = "result-box error";
+        resultBox.innerHTML = "Please enter a valid certificate number.";
+        return;
+    }
+
+    // Placeholder (backend integration pending)
+    // Later this will call your API: fetch('https://backend/verify?cert=' + cert)
+
+    // Temporary sample logic:
+    if (cert === "IIBSE2025TEST") {
+        resultBox.style.display = "block";
+        resultBox.className = "result-box success";
+        resultBox.innerHTML = `
+            <h3>Certificate Verified</h3>
+            <p><strong>Name:</strong> Demo Student</p>
+            <p><strong>Course:</strong> Higher Secondary Diploma Certificate</p>
+            <p><strong>Status:</strong> Valid & Approved</p>
+        `;
+    } else {
+        resultBox.style.display = "block";
+        resultBox.className = "result-box error";
+        resultBox.innerHTML = "Invalid Certificate Number. Please check and try again.";
+    }
+}
+</script>
+
+</body>
+</html>
