@@ -1,1 +1,185 @@
 
+/* ------------------------------
+   GLOBAL STYLES
+--------------------------------*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+    color: #222;
+    line-height: 1.6;
+}
+
+/* ------------------------------
+   HEADER / NAVBAR
+--------------------------------*/
+header {
+    width: 100%;
+    background: #003b73;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .logo {
+    color: #fff;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    padding-bottom: 3px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    border-bottom: 2px solid #fff;
+}
+
+/* ------------------------------
+   HERO SLIDER
+--------------------------------*/
+.hero {
+    width: 100%;
+    height: 65vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero .slide {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+}
+
+.hero .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero .slide.active {
+    display: block;
+}
+
+.hero .caption {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 20px;
+}
+
+/* ------------------------------
+   WELCOME SECTION
+--------------------------------*/
+.welcome {
+    padding: 50px 25px;
+    text-align: center;
+}
+
+.welcome h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    color: #003b73;
+}
+
+.welcome p {
+    max-width: 750px;
+    margin: 0 auto;
+    font-size: 18px;
+    color: #333;
+}
+
+.quick-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.quick-actions a {
+    padding: 12px 20px;
+    background: #003b73;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+quick-actions a:hover {
+    background: #00509d;
+}
+
+/* ------------------------------
+   FOOTER
+--------------------------------*/
+footer {
+    margin-top: 40px;
+    background: #003b73;
+    color: #fff;
+    padding: 18px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* ------------------------------
+   RESPONSIVE DESIGN
+--------------------------------*/
+@media (max-width: 768px) {
+    nav ul {
+        gap: 10px;
+    }
+
+    header .logo {
+        font-size: 22px;
+    }
+
+    .welcome h2 {
+        font-size: 26px;
+    }
+
+    .welcome p {
+        font-size: 16px;
+    }
+
+    .quick-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hero {
+        height: 45vh;
+    }
+
+    .hero .caption {
+        font-size: 16px;
+        bottom: 10px;
+        left: 10px;
+    }
+}
