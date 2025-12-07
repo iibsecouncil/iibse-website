@@ -1,1 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>School Dashboard — IIBSE Panel</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .panel-wrap{max-width:1100px;margin:18px auto;padding:10px}
+    .top-row{display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,.04)}
+    .stats{display:flex;gap:12px;margin-top:14px}
+    .stats .card{flex:1;text-align:center}
+    .actions{display:flex;gap:10px;margin-top:12px}
+    .btn{padding:10px 14px;border-radius:6px;border:none;cursor:pointer}
+    .btn-primary{background:#003b73;color:#fff}
+    .btn-ghost{background:#f1f5fa;color:#003b73}
+    .list{margin-top:14px}
+    .list table{width:100%;border-collapse:collapse}
+    .list th, .list td{padding:10px;border-bottom:1px solid #eee;text-align:left}
+    .small{font-size:13px;color:#666}
+    .modal{position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
+    .modal .box{width:100%;max-width:720px;background:#fff;padding:18px;border-radius:8px}
+    .apply-upgrade{margin-top:12px}
+    .notice{background:#fff3cd;padding:12px;border-radius:6px;color:#664d03;margin-top:12px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">IIBSE Panel</div>
+  </header>
+
+  <div class="panel-wrap">
+    <div class="top-row">
+      <div>
+        <h2 id="schoolName">School Dashboard</h2>
+        <div class="small" id="schoolCategory"></div>
+      </div>
+      <div class="actions">
+        <button id="btnAddStudent" class="btn btn-primary">Add Student</button>
+        <button id="btnApplyModule" class="btn btn-ghost">Apply for Module Upgrade</button>
+        <button id="btnPayNow" class="btn btn-primary">Pay Now</button>
+        <button id="btnLogout" class="btn">Logout</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card">
+        <h3 id="statTotal">0</h3>
+        <p class="small">Total Students</p>
+      </div>
+      <div class="card">
+        <h3 id="statPending">0</h3>
+        <p class="small">Pending Admissions</p>
+      </div>
+      <div class="card">
+        <h3 id="statModules">0</h3>
+        <p class="small">Approved Modules</p>
+      </div>
+    </div>
+
+    <div class="notice" id="affNotice">
+      Affiliation Modules: <span id="modulesList"></span>
+      <div class="small" style="margin-top:6px">Click <strong>Apply for Module Upgrade</strong> to request additional modules.</div>
+    </div>
+
+    <div class="list card">
+      <h3>Student Applications</h3>
+      <table>
+        <thead><tr><th>Name</th><th>Class/Course</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="studentsTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADD STUDENT MODAL -->
+  <div id="modalAdd" class="modal">
+    <div class="box">
+      <h3>Add Student (Dashboard)</h3>
+      <form id="addStudentForm">
+        <label>Full Name</label>
+        <input name="name" required>
+        <label>Class / Course</label>
+        <select name="classOrCourse" id="classSelect" required></select>
+        <label>Referral ID (optional)</label>
+        <input name="referrer">
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button type="submit" class="btn btn-primary">Save Application</button>
+          <button type="button" id="closeModal" class="btn btn-ghost">Cancel</button>
+        </div>
+      </form>
+      <div class="small" style="margin-top:10px">If the class/course is not allowed, the system will block the selection and prompt module upgrade.</div>
+    </div>
+  </div>
+
+  <!-- APPLY MODULE MODAL -->
+  <div id="modalApply" class="modal">
+    <div class="box">
+      <h3>Apply for Additional Module</h3>
+      <p>Choose module to request (this is demo — request will be sent to IIBSE admin).</p>
+      <label>Select Module</label>
+      <select id="applyModuleSelect">
+        <option value="foundational">Foundational (Nursery–2)</option>
+        <option value="preparatory">Preparatory (3–5)</option>
+        <option value="middle">Middle (6–8)</option>
+        <option value="secondary">Secondary (9–12)</option>
+      </select>
+      <div style="margin-top:12px">
+        <button id="submitModuleReq" class="btn btn-primary">Submit Request</button>
+        <button id="closeApply" class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/school-panel.js"></script>
+</body>
+</html>
 
