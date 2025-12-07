@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About IIBSE – Indian International Board of Skills Schools & Education</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .about-box {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .about-box h2 {
+            text-align: center;
+            color: #003b73;
+            margin-bottom: 20px;
+        }
+        .about-box p {
+            font-size: 17px;
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+        .heading {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 25px;
+            color: #003b73;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- TOP NAVBAR -->
+<header>
+    <div class="logo">IIBSE</div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="affiliation.html">Affiliation</a></li>
+            <li><a href="adviser.html">Adviser Registration</a></li>
+            <li><a class="active" href="about.html">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ABOUT SECTION -->
+<section class="about-box">
+
+    <h2>About IIBSE</h2>
+
+    <p>
+        Indian International Board of Skills Schools & Education (IIBSE) is an autonomous 
+        national-level skill education and examination board established to promote modern skill 
+        development, professional training, academic enhancement, and competency-based learning 
+        for students, institutions, and trainers across India and abroad.
+    </p>
+
+    <p>
+        IIBSE provides affiliation to schools, training centres, institutions, academies, skill hubs, and 
+        vocational centres to implement national-level competency standards, digital education systems,
+        modern curriculum frameworks, and student certification.
+    </p>
+
+    <p>
+        The Board offers digital learning support, online and offline examination frameworks, 
+        vocational assessment, professional registration of certified candidates, and 
+        verification services for employers and organizations.
+    </p>
+
+    <div class="heading">Our Purpose</div>
+    <p>
+        IIBSE aims to develop a quality ecosystem for skill-based learning from school level to 
+        advanced professional levels. The purpose is to support the nation’s vision of Skill India, 
+        Digital India, and global workforce development by empowering students with employable skills.
+    </p>
+
+    <div class="heading">What We Do</div>
+    <p>✔ Provide Affiliation to Institutions, Schools & Training Centres</p>
+    <p>✔ Conduct Online & Offline Skill Examinations</p>
+    <p>✔ Issue National Skill Certificates</p>
+    <p>✔ Register Passed Candidates as Professionals</p>
+    <p>✔ Provide Verification Services for Employers</p>
+    <p>✔ Develop Courses, Curriculum & Training Materials</p>
+    <p>✔ Support Students & Institutions with Digital Learning Tools</p>
+
+    <div class="heading">Professional Candidate Registry</div>
+    <p>
+        All students who successfully complete their course and pass the assessment examinations 
+        are registered under the IIBSE Professional Registry, allowing them to work anywhere in India 
+        and abroad. Employers can verify their records online through the official website.
+    </p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    © 2025 IIBSE – Indian International Board of Skills Schools & Education
+</footer>
+
+</body>
+</html>
