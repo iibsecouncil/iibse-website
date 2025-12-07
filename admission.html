@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Admission – IIBSE</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .admission-box {
+            max-width: 850px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #003b73;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        textarea { height: 120px; }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #003b73;
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header>
+    <div class="logo">IIBSE</div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a class="active" href="admission.html">Admission</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ADMISSION FORM -->
+<section class="admission-box">
+
+    <h2>Student Admission Form</h2>
+
+    <form id="admissionForm">
+
+        <!-- Basic Info -->
+        <label>Full Name *</label>
+        <input type="text" name="name" required>
+
+        <label>Father / Guardian Name *</label>
+        <input type="text" name="father" required>
+
+        <label>Date of Birth *</label>
+        <input type="date" name="dob" required>
+
+        <label>Mobile Number *</label>
+        <input type="text" name="mobile" required>
+
+        <label>Email ID</label>
+        <input type="email" name="email">
+
+        <label>Full Address *</label>
+        <textarea name="address" required></textarea>
+
+
+        <!-- Course Selection -->
+        <h3 style="margin-top: 20px; color:#003b73;">Select Course</h3>
+
+        <label>Choose Category *</label>
+        <select name="category" required>
+            <option value="">-- Select Category --</option>
+            <option>School Education (Nursery to 12th)</option>
+            <option>Skill Education (Class 6–12)</option>
+            <option>Diploma After 10th (NSQF Level 3–5)</option>
+            <option>Diploma After 12th (Advanced)</option>
+            <option>Vocational Training Programmes</option>
+        </select>
+
+        <label>Select Course *</label>
+        <select name="course" required>
+            <option value="">-- Select Course --</option>
+
+            <!-- School -->
+            <option>Nursery / LKG / UKG</option>
+            <option>Primary (Class 1–5)</option>
+            <option>Middle School (Class 6–8)</option>
+            <option>High School (9–10)</option>
+            <option>Senior Secondary (11–12)</option>
+
+            <!-- Diploma After 10th -->
+            <option>Diploma in Medical Laboratory Technology (DMLT)</option>
+            <option>Diploma in ECG Technician</option>
+            <option>Diploma in Nursing Assistant</option>
+            <option>Diploma in Montessori / Early Education</option>
+            <option>Diploma in Fashion Design & Tailoring</option>
+            <option>Diploma in Office & Computer Skills</option>
+
+            <!-- Diploma After 12th -->
+            <option>Advanced Diploma in Radiology Assistant</option>
+            <option>Advanced Diploma in Teacher Education</option>
+            <option>Advanced Diploma in Fashion Designing</option>
+            <option>Advanced Diploma in Business Management</option>
+            <option>ADCA – Advanced Diploma in Computer Applications</option>
+
+            <!-- Vocational -->
+            <option>Beautician & Makeup Artist</option>
+            <option>Mobile Repairing Technician</option>
+            <option>Agriculture Technician</option>
+            <option>Retail & Customer Service</option>
+        </select>
+
+
+        <!-- Adviser Referral -->
+        <label>Adviser Referral ID (Optional)</label>
+        <input type="text" name="referral">
+
+
+        <!-- Document Upload -->
+        <label>Upload Student Photo *</label>
+        <input type="file" name="photo" required>
+
+        <label>Upload ID Proof *</label>
+        <input type="file" name="idproof" required>
+
+        <label>Previous Marks Card (Optional)</label>
+        <input type="file" name="marks">
+
+
+        <!-- Submit -->
+        <button class="submit-btn" type="submit">Submit Admission</button>
+
+    </form>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    © 2025 IIBSE – Indian International Board of Skills Schools & Education
+</footer>
+
+<script>
+    const admissionForm = document.getElementById("admissionForm");
+
+    if (admissionForm) {
+        admissionForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            alert("Your admission form has been submitted successfully!");
+            admissionForm.reset();
+        });
+    }
+</script>
+
+</body>
+</html>
