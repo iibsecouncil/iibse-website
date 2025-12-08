@@ -3,7 +3,6 @@
 <head>
 <title>Add Notice - IIBSE Admin</title>
 <link rel="stylesheet" href="../style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -20,7 +19,37 @@
 
 <p id="msg"></p>
 
-<script src="admin.js"></script>
+<script>
+// ⭐ IMPORTANT: Replace with your backend URL after deployment
+const BACKEND_URL = "https://YOUR_BACKEND_URL.onrender.com";
+
+async function addNotice() {
+    let t = document.getElementById("title").value.trim();
+    let m = document.getElementById("message").value.trim();
+    let msg = document.getElementById("msg");
+
+    if (!t || !m) {
+        msg.innerText = "Please fill all fields.";
+        return;
+    }
+
+    // ⭐ BACKEND CALL (no Supabase direct)
+    let res = await fetch(`${BACKEND_URL}/admin/addNotice`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: t, message: m })
+    });
+
+    let data = await res.json();
+
+    if (data.error) {
+        msg.innerText = "Failed to add notice.";
+        return;
+    }
+
+    msg.innerText = "Notice added successfully!";
+}
+</script>
+
 </body>
 </html>
-<script src="admin.js"></script>
