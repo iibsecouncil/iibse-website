@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Approve Schools</title>
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<h2>Approve Schools</h2>
+
+<table border="1" width="100%">
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Email</th>
+  <th>Status</th>
+  <th>Action</th>
+</tr>
+</thead>
+<tbody id="schoolTable"></tbody>
+</table>
+
+<script src="admin.js"></script>
+
+<script>
+loadSchools();
+</script>
+
+</body>
+</html>
