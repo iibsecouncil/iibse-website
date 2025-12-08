@@ -12,10 +12,10 @@
 // -------------------------------------------
 // CONFIG
 // -------------------------------------------
-const BACKEND_URL = "https://iibse-website-1.onrender.com";
+const API = "https://iibse-website-1.onrender.com";  // correct backend URL
 
 // -------------------------------------------
-// SCHOOL LOGIN
+// SCHOOL LOGIN (FINAL WORKING VERSION)
 // -------------------------------------------
 async function loginSchool(event) {
     event.preventDefault();
@@ -23,7 +23,7 @@ async function loginSchool(event) {
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
 
-    const res = await fetch(`${BACKEND_URL}/api/school-login`, {
+    const res = await fetch(`${API}/schools/login`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email, password })
@@ -35,6 +35,7 @@ async function loginSchool(event) {
         localStorage.setItem("isLogged", "true");
         localStorage.setItem("school_id", data.school.id);
         localStorage.setItem("school_name", data.school.name);
+
         window.location.href = "school-dashboard.html";
     } else {
         alert("Login Failed: " + data.message);
