@@ -5,15 +5,45 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>School Login — IIBSE Panel</title>
   <link rel="stylesheet" href="../css/style.css" />
+
   <style>
-    body{background:#f0f4ff;}
-    .login-box{max-width:420px;margin:60px auto;background:#fff;padding:26px;border-radius:8px;
-      box-shadow:0 6px 18px rgba(0,0,0,.08)}
-    .login-box h2{color:#003b73;margin-bottom:12px;text-align:center}
-    .login-box input{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc}
-    .login-btn{background:#003b73;color:#fff;padding:12px;border-radius:6px;border:none;width:100%;cursor:pointer}
-    .note{font-size:13px;color:#666;margin-top:10px;text-align:center}
-    #msg{margin-top:10px;text-align:center;font-weight:bold;}
+    body { background:#f0f4ff; }
+
+    .login-box {
+      max-width:420px;
+      margin:60px auto;
+      background:#fff;
+      padding:26px;
+      border-radius:8px;
+      box-shadow:0 6px 18px rgba(0,0,0,.08);
+    }
+
+    .login-box h2 {
+      color:#003b73;
+      margin-bottom:12px;
+      text-align:center;
+    }
+
+    .login-box input {
+      width:100%;
+      padding:10px;
+      margin:8px 0;
+      border-radius:6px;
+      border:1px solid #ccc;
+    }
+
+    .login-btn {
+      background:#003b73;
+      color:#fff;
+      padding:12px;
+      border-radius:6px;
+      border:none;
+      width:100%;
+      cursor:pointer;
+    }
+
+    .note { font-size:13px; color:#666; margin-top:10px; text-align:center; }
+    #msg { margin-top:10px; text-align:center; font-weight:bold; }
   </style>
 </head>
 
@@ -41,7 +71,8 @@
 
     <div class="note">
       <strong>Demo credentials:</strong><br>
-      email: <code>demo.school@iibse.in</code> | password: <code>password123</code>
+      email: <code>demo.school@iibse.in</code><br>
+      password: <code>password123</code>
     </div>
   </div>
 </main>
@@ -55,10 +86,12 @@ document.getElementById("schoolLoginForm").addEventListener("submit", async (e) 
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
     const msg = document.getElementById("msg");
+
+    msg.style.color = "black";
     msg.innerText = "Checking... Please wait.";
 
     try {
-        const res = await fetch(`${backend}/school/login`, {
+        const res = await fetch(`${backend}/schools/login`, {   // ✔ FIXED API ROUTE
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -66,24 +99,24 @@ document.getElementById("schoolLoginForm").addEventListener("submit", async (e) 
 
         const data = await res.json();
 
-        if (!res.ok) {
+        if (!data.success) {
             msg.style.color = "red";
-            msg.innerText = data.error || "Login failed.";
+            msg.innerText = data.message || "Login failed.";
             return;
         }
 
-        // Save session
-        localStorage.setItem("school_id", data.school_id);
-        localStorage.setItem("school_name", data.school_name);
-        localStorage.setItem("approved", data.approved);
+        // ✔ Save session details
         localStorage.setItem("isLogged", "true");
+        localStorage.setItem("school_id", data.school.id);
+        localStorage.setItem("school_name", data.school.name);
+        localStorage.setItem("approved", data.school.approved);
 
         msg.style.color = "green";
         msg.innerText = "Login successful! Redirecting...";
 
         setTimeout(() => {
             window.location.href = "school-dashboard.html";
-        }, 500);
+        }, 600);
 
     } catch (err) {
         msg.style.color = "red";
