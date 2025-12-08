@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>School Profile - IIBSE</title>
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+.box {
+  padding: 12px;
+  background: #f4f4f4;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>School Profile</h2>
+
+<div class="box">
+  <label>Name</label>
+  <input id="name">
+
+  <label>Email</label>
+  <input id="email">
+
+  <label>Category</label>
+  <input id="cat">
+
+  <button onclick="updateProfile()">Save</button>
+  <p id="msg"></p>
+</div>
+
+<script>
+const db = supabase.createClient(
+ "https://phghqudhsmksakzlsygy.supabase.co",
+ "YOUR_ANON_KEY_HERE"
+);
+
+let schoolId = 1;
+
+async function loadProfile() {
+  let { data } = await db.from("schools").select("*").eq("id", schoolId).single();
+
+  name.value = data.name;
+  email.value = data.email;
+  cat.value = data.category;
+}
+
+async function updateProfile() {
+  await db.from("schools")
+    .update({
+      name: name.value,
+      email: email.value,
+      category: cat.value
+    })
+    .eq("id", schoolId);
+
+  msg.innerText = "Profile Updated!";
+}
+
+loadProfile();
+</script>
+
+</body>
+</html>
 
