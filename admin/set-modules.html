@@ -1,26 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Set School Modules</title>
-<link rel="stylesheet" href="../style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Set Modules - IIBSE Admin</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
 
-<h2>Assign Modules to a School</h2>
+<h2>Assign / Update Modules</h2>
 
-<label>School ID</label>
-<input id="sid">
+<label>Select School</label>
+<select id="schoolSelect" onchange="loadSchoolModules()">
+    <option value="">-- Select School --</option>
+</select>
 
-<label>Modules (comma separated)</label>
-<input id="mods" placeholder="example: nursery,primary,secondary">
+<div id="moduleBox" style="margin-top:20px; display:none;">
+    <h3>Approved Modules</h3>
 
-<button onclick="setModules()">Update Modules</button>
+    <label><input type="checkbox" value="NURSERY-2"> Nursery - Class 2</label><br>
+    <label><input type="checkbox" value="3-5"> Class 3 - 5</label><br>
+    <label><input type="checkbox" value="6-8"> Class 6 - 8</label><br>
+    <label><input type="checkbox" value="9-12"> Class 9 - 12</label><br>
+
+    <h4>Vocational / Skill Modules</h4>
+    <label><input type="checkbox" value="ALLIED_HEALTH"> Allied Health</label><br>
+    <label><input type="checkbox" value="FASHION_TECH"> Fashion Technology</label><br>
+    <label><input type="checkbox" value="MECHANIC_TWO_WHEELER"> Two Wheeler Mechanic</label><br>
+    <label><input type="checkbox" value="COMMERCIAL_PRACTICE"> Commercial Practice</label><br>
+    <label><input type="checkbox" value="ECCE"> Early Childhood Care & Education (ECCE)</label><br>
+
+    <br>
+    <button onclick="saveModules()">Save Modules</button>
+</div>
 
 <p id="msg"></p>
 
-<script src="admin.js"></script>
+<script>
+// ⭐ Backend URL
+const BACKEND_URL = "https://iibse-website-1.onrender.com";
+
+// ⭐ Load all approved schools
+async function loadSchools() {
+    let res = await fetch(`${BACKEND_URL}/admin/allApprovedSchools`);
+    let data = await res.json();
+
+    let sel = document.getElementById("schoolSelect");
+
+    data.forEach(s => {
+        sel.innerHTML += `<option value="${s.id}">${s.school_name}</option>`;
+    });
+}
+
+// ⭐ Load school’s currently approved modules
+async function loadSchoolModules() {
+    let id = document.getElementById("schoolSelect").value;
+    if (!id) return;
+
+    let res = await fetch(`${BACKEND_URL}/admin/getModules?school_id=${id}`);
+    let data = await res.json();
+
+    let box = document.getElementById("moduleBox");
+    box.style.display = "block";
+
+    // Uncheck all first
+    document.querySelectorAll("#moduleBox input[type=checkbox]").forEach(c => c.checked = false);
+
+    // Apply saved modules
+    if (data.modules) {
+        data.modules.forEach(m => {
+            let chk = document.querySelector(`#moduleBox input[value="${m}"]`);
+            if (chk) chk.checked = true;
+        });
+    }
+}
+
+// ⭐ Save updated modules
+async function saveModules() {
+    let id = document.getElementById("schoolSelect").value;
+    let msg = document.getElementById("msg");
+
+    let selected = [];
+    document.querySelectorAll("#moduleBox input[type=checkbox]:checked")
+        .forEach(c => selected.push(c.value));
+
+    let res = await fetch(`${BACKEND_URL}/admin/setModules`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            school_id: id,
+            modules: selected
+        })
+    });
+
+    let data = await res.json();
+    msg.innerText = data.message || "Modules updated!";
+}
+
+// Load schools on page load
+loadSchools();
+</script>
+
 </body>
 </html>
-<script src="admin.js"></script>
