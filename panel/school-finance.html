@@ -1,1 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Finance - IIBSE</title>
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+.box {
+  padding: 12px;
+  background: #f4f4f4;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+.paybtn {
+  background: green;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Finance & Fee Details</h2>
+
+<div id="financeBox"></div>
+
+<h3>Payment History</h3>
+<div id="history"></div>
+
+<script>
+const db = supabase.createClient(
+  "https://phghqudhsmksakzlsygy.supabase.co",
+  "YOUR_ANON_KEY_HERE"
+);
+
+async function loadFinance() {
+  let { data: students } = await db.from("students").select("*");
+
+  let html = "";
+  students.forEach(s => {
+    html += `
+      <div class="box">
+        <strong>${s.name}</strong> — ${s.class_or_course}  
+        <br>Pending Fees: ₹${s.fees_pending}
+        ${s.fees_pending > 0 ? `<br><button class="paybtn" onclick="pay(${s.id}, ${s.fees_pending})">Pay Now</button>` : ""}
+      </div>
+    `;
+  });
+
+  document.getElementById("financeBox").innerHTML = html;
+
+  // Show payment history
+  let { data: pay } = await db.from("payments").select("*");
+  let ph = "";
+  pay.forEach(p => {
+    ph += `<p>₹${p.amount} paid on ${new Date(p.payment_date).toLocaleString()}</p>`;
+  });
+  document.getElementById("history").innerHTML = ph;
+}
+
+async function pay(id, amt) {
+  // Insert payment
+  await db.from("payments").insert({
+    student_id: id,
+    amount: amt
+  });
+
+  // Update student fee to 0
+  await db.from("students").update({ fees_pending: 0 }).eq("id", id);
+
+  loadFinance();
+}
+
+loadFinance();
+</script>
+
+</body>
+</html>
 
