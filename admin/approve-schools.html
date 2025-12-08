@@ -1,34 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Approve Schools</title>
-<link rel="stylesheet" href="../style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Approve Schools - IIBSE Admin</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
 
-<h2>Approve Schools</h2>
+<h2>Pending School Approvals</h2>
 
 <table border="1" width="100%">
-<thead>
-<tr>
-  <th>Name</th>
-  <th>Email</th>
-  <th>Status</th>
-  <th>Action</th>
-</tr>
-</thead>
-<tbody id="schoolTable"></tbody>
+    <thead>
+        <tr>
+            <th>School Name</th>
+            <th>District</th>
+            <th>Email</th>
+            <th>Modules Applied</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody id="schoolList"></tbody>
 </table>
 
-<script src="admin.js"></script>
+<p id="msg"></p>
 
 <script>
-loadSchools();
+// ⭐ Your Backend URL
+const BACKEND_URL = "https://iibse-website-1.onrender.com";
+
+async function loadPendingSchools() {
+    let res = await fetch(`${BACKEND_URL}/admin/pendingSchools`);
+    let data = await res.json();
+
+    let box = document.getElementById("schoolList");
+    box.innerHTML = "";
+
+    data.forEach(s => {
+        box.innerHTML += `
+            <tr>
+                <td>${s.school_name}</td>
+                <td>${s.district}</td>
+                <td>${s.email}</td>
+                <td>${s.applied_modules.join(", ")}</td>
+                <td>${s.status}</td>
+                <td>
+                    <button onclick="approveSchool('${s.id}')">Approve</button>
+                    <button onclick="rejectSchool('${s.id}')">Reject</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+async function approveSchool(id) {
+    let res = await fetch(`${BACKEND_URL}/admin/approveSchool`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+    });
+
+    let data = await res.json();
+    document.getElementById("msg").innerText = data.message || "Approved!";
+    loadPendingSchools();
+}
+
+async function rejectSchool(id) {
+    let res = await fetch(`${BACKEND_URL}/admin/rejectSchool`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+    });
+
+    let data = await res.json();
+    document.getElementById("msg").innerText = data.message || "Rejected!";
+    loadPendingSchools();
+}
+
+// Load pending schools on page open
+loadPendingSchools();
 </script>
 
 </body>
 </html>
-<script src="admin.js"></script>
-<script> loadSchools(); </script>
