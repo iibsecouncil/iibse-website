@@ -1,0 +1,128 @@
+import express from "express";
+import cors from "cors";
+import { createClient } from "@supabase/supabase-js";
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// ⭐ Secure Backend Connection
+const SUPABASE_URL = "https://phghqudhsmksakzlsygy.supabase.co";
+const SERVICE_ROLE = process.env.SERVICE_ROLE_KEY;
+
+const db = createClient(SUPABASE_URL, SERVICE_ROLE);
+
+app.get("/", (req, res) => {
+  res.send("IIBSE Backend Running Successfully...");
+});
+
+// ----------------------------------------------------
+// 1️⃣ ADD NOTICE
+// ----------------------------------------------------
+app.post("/admin/addNotice", async (req, res) => {
+  const { title, message } = req.body;
+
+  const { error } = await db
+    .from("notices")
+    .insert({ title, message });
+
+  if (error) return res.status(400).json({ error });
+  res.json({ success: true, message: "Notice Added!" });
+});
+
+// ----------------------------------------------------
+// 2️⃣ GET ALL PENDING SCHOOLS
+// ----------------------------------------------------
+app.get("/admin/pendingSchools", async (req, res) => {
+  let { data, error } = await db
+    .from("schools")
+    .select("*")
+    .eq("status", "pending"); 
+
+  if (error) return res.status(400).json({ error });
+
+  res.json(data);
+});
+
+// ----------------------------------------------------
+// 3️⃣ APPROVE SCHOOL
+// ----------------------------------------------------
+app.post("/admin/approveSchool", async (req, res) => {
+  const { id } = req.body;
+
+  let { error } = await db
+    .from("schools")
+    .update({ status: "approved" })
+    .eq("id", id);
+
+  if (error) return res.status(400).json({ error });
+
+  res.json({ success: true, message: "School Approved!" });
+});
+
+// ----------------------------------------------------
+// 4️⃣ REJECT SCHOOL
+// ----------------------------------------------------
+app.post("/admin/rejectSchool", async (req, res) => {
+  const { id } = req.body;
+
+  let { error } = await db
+    .from("schools")
+    .update({ status: "rejected" })
+    .eq("id", id);
+
+  if (error) return res.status(400).json({ error });
+
+  res.json({ success: true, message: "School Rejected!" });
+});
+
+// ----------------------------------------------------
+// 5️⃣ GET ALL APPROVED SCHOOLS
+// ----------------------------------------------------
+app.get("/admin/allApprovedSchools", async (req, res) => {
+  let { data, error } = await db
+    .from("schools")
+    .select("*")
+    .eq("status", "approved");
+
+  if (error) return res.status(400).json({ error });
+
+  res.json(data);
+});
+
+// ----------------------------------------------------
+// 6️⃣ GET MODULES FOR A SCHOOL
+// ----------------------------------------------------
+app.get("/admin/getModules", async (req, res) => {
+  const school_id = req.query.school_id;
+
+  let { data, error } = await db
+    .from("schools")
+    .select("approved_modules")
+    .eq("id", school_id)
+    .single();
+
+  if (error) return res.status(400).json({ error });
+
+  res.json({ modules: data.approved_modules || [] });
+});
+
+// ----------------------------------------------------
+// 7️⃣ SET / UPDATE MODULES
+// ----------------------------------------------------
+app.post("/admin/setModules", async (req, res) => {
+  const { school_id, modules } = req.body;
+
+  let { error } = await db
+    .from("schools")
+    .update({ approved_modules: modules })
+    .eq("id", school_id);
+
+  if (error) return res.status(400).json({ error });
+
+  res.json({ success: true, message: "Modules Updated!" });
+});
+
+// ----------------------------------------------------
+
+app.listen(3000, () => console.log("IIBSE Backend LIVE on PORT 3000"));
