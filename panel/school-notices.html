@@ -1,1 +1,57 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IIBSE Notices</title>
+
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+.notice-box {
+  background: #f1f1f1;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Notices & Circulars</h2>
+
+<div id="noticeBox"></div>
+
+<script>
+const db = supabase.createClient(
+  "https://phghqudhsmksakzlsygy.supabase.co",
+  "YOUR_ANON_KEY_HERE"
+);
+
+async function loadNotices() {
+  let { data, error } = await db.from("notices").select("*").order("created_at", { ascending: false });
+
+  if (error) return;
+
+  let html = "";
+  data.forEach(n => {
+    html += `
+      <div class="notice-box">
+        <h3>${n.title}</h3>
+        <p>${n.message}</p>
+        <small>${new Date(n.created_at).toLocaleString()}</small>
+      </div>
+    `;
+  });
+
+  document.getElementById("noticeBox").innerHTML = html;
+}
+
+loadNotices();
+</script>
+
+</body>
+</html>
