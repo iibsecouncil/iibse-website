@@ -1,139 +1,59 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Admission — IIBSE Panel</title>
-<link rel="stylesheet" href="../css/style.css">
-
-<style>
-  body { background:#f0f4ff; }
-  .container {
-    max-width: 800px;
-    margin: 25px auto;
-    background:#fff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-  }
-  h2 { color:#003b73; }
-  input, select {
-    width:100%;padding:10px;margin:10px 0;border-radius:6px;border:1px solid #ccc;
-  }
-  button {
-    padding:12px;background:#003b73;color:#fff;border:none;width:100%;
-    border-radius:6px;cursor:pointer;font-size:16px;
-  }
-  #msg { margin-top:12px;font-weight:bold;text-align:center; }
-</style>
+  <meta charset="utf-8">
+  <title>New Admission – IIBSE School Panel</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/school-panel.js"></script>
 </head>
 
 <body>
+  <header>
+    <h2>IIBSE – New Student Admission</h2>
+  </header>
 
-<header><div class="logo">IIBSE School Panel</div></header>
+  <main>
+    <form id="admissionForm">
+      
+      <label>Student Name</label>
+      <input type="text" id="studentName" required>
 
-<div class="container">
-  <h2>New Student Admission</h2>
+      <label>Course Type</label>
+      <select id="courseType" required>
+        <option value="">Select</option>
+        <option value="School">School (NEP – Module Based)</option>
+        <option value="Skill">Skill Integrated</option>
+        <option value="Diploma">Diploma / Allied Health</option>
+      </select>
 
-  <label>Student Name</label>
-  <input type="text" id="studentName">
+      <label>Class / Level</label>
+      <select id="classLevel" required>
+        <option value="">Select</option>
 
-  <label>Class / Course</label>
-  <input type="text" id="studentClass">
+        <!-- NEP School Modules -->
+        <option value="Module 1 (Nursery–Class 2)">Module 1 (Nursery–Class 2)</option>
+        <option value="Module 2 (Class 3–Class 5)">Module 2 (Class 3–Class 5)</option>
+        <option value="Module 3 (Class 6–Class 8)">Module 3 (Class 6–Class 8)</option>
+        <option value="Module 4 (Class 9–Class 12)">Module 4 (Class 9–Class 12)</option>
 
-  <label>Admission Type</label>
-  <select id="admissionType">
-    <option value="">Select Type</option>
-    <option value="School">School (NEP 5+3+3+4)</option>
-    <option value="Skill">Skill Integrated</option>
-    <option value="Diploma">Diploma (After 10/12)</option>
-  </select>
+        <!-- Skill -->
+        <option value="Skill – ECCE">Skill – ECCE</option>
+        <option value="Skill – Fashion Technology">Skill – Fashion Technology</option>
+        <option value="Skill – Commercial Business Practice">Skill – Commercial Business Practice</option>
+        <option value="Skill – Two Wheeler Mechanic">Skill – Two Wheeler Mechanic</option>
 
-  <label>Referral ID (Optional)</label>
-  <input type="text" id="referralId">
+        <!-- Diploma -->
+        <option value="Diploma – DMLT">Diploma – DMLT</option>
+        <option value="Diploma – Nursing Assistant">Diploma – Nursing Assistant</option>
+        <option value="Diploma – X-Ray Technician">Diploma – X-Ray Technician</option>
+      </select>
 
-  <button onclick="submitAdmission()">Submit Admission</button>
+      <label>Referral ID (optional)</label>
+      <input type="text" id="referralID" placeholder="If any">
 
-  <p id="msg"></p>
-</div>
-
-<script>
-const backend = "https://iibse-website-1.onrender.com";
-
-// Load allowed modules
-let allowedModules = [];
-
-async function loadModules() {
-  const schoolId = localStorage.getItem("school_id");
-
-  const res = await fetch(`${backend}/school/get-modules?school_id=${schoolId}`);
-  const data = await res.json();
-
-  allowedModules = data.modules || [];
-}
-loadModules();
-
-// Submit admission
-async function submitAdmission() {
-  const name = document.getElementById("studentName").value.trim();
-  const classCourse = document.getElementById("studentClass").value.trim();
-  const type = document.getElementById("admissionType").value;
-  const referral = document.getElementById("referralId").value.trim();
-  const msg = document.getElementById("msg");
-
-  if (!name || !classCourse || !type) {
-    msg.style.color = "red";
-    msg.innerText = "All fields are required.";
-    return;
-  }
-
-  // Check module permission
-  if (!allowedModules.includes(type)) {
-    alert("Your school does not have permission for this module. Apply for higher module.");
-    return;
-  }
-
-  const payload = {
-    school_id: localStorage.getItem("school_id"),
-    student_name: name,
-    class_course: classCourse,
-    admission_type: type,
-    referral_id: referral,
-    status: "pending",
-    fee_pending: true
-  };
-
-  try {
-    const res = await fetch(`${backend}/school/admission`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      msg.style.color = "red";
-      msg.innerText = data.error || "Failed to submit.";
-      return;
-    }
-
-    msg.style.color = "green";
-    msg.innerText = "Admission Submitted Successfully!";
-
-    setTimeout(() => {
-      window.location.href = "school-students.html";
-    }, 800);
-
-  } catch (err) {
-    msg.style.color = "red";
-    msg.innerText = "Server error.";
-  }
-}
-</script>
-
-<script src="../js/session-school.js"></script>
-<script>checkSchoolSession();</script>
+      <button type="button" onclick="submitAdmission()">Submit Admission</button>
+    </form>
+  </main>
 
 </body>
 </html>
