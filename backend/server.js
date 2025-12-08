@@ -192,6 +192,19 @@ app.get("/school/students", async (req, res) => {
     res.status(500).json({ error: "Failed to load students" });
   }
 });
+app.get("/school/get-modules", async (req, res) => {
+  const school_id = req.query.school_id;
+
+  const { data, error } = await supabase
+    .from("schools")
+    .select("allowed_modules")
+    .eq("id", school_id)
+    .single();
+
+  if (error) return res.status(400).json({ error });
+
+  res.json({ modules: data.allowed_modules || [] });
+});
 
 // -----------------------------------------------------
 // RUN BACKEND
