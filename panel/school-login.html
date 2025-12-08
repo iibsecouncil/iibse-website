@@ -6,38 +6,91 @@
   <title>School Login — IIBSE Panel</title>
   <link rel="stylesheet" href="../css/style.css" />
   <style>
-    .login-box{max-width:420px;margin:60px auto;background:#fff;padding:26px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+    body{background:#f0f4ff;}
+    .login-box{max-width:420px;margin:60px auto;background:#fff;padding:26px;border-radius:8px;
+      box-shadow:0 6px 18px rgba(0,0,0,.08)}
     .login-box h2{color:#003b73;margin-bottom:12px;text-align:center}
     .login-box input{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc}
     .login-btn{background:#003b73;color:#fff;padding:12px;border-radius:6px;border:none;width:100%;cursor:pointer}
-    .note{font-size:13px;color:#666;margin-top:10px}
+    .note{font-size:13px;color:#666;margin-top:10px;text-align:center}
+    #msg{margin-top:10px;text-align:center;font-weight:bold;}
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="logo">IIBSE Panel</div>
-  </header>
 
-  <main>
-    <div class="login-box">
-      <h2>School / Training Center Login</h2>
+<header>
+  <div class="logo">IIBSE Panel</div>
+</header>
 
-      <form id="schoolLoginForm">
-        <label>Email</label>
-        <input type="email" id="loginEmail" required placeholder="school@example.com">
-        <label>Password</label>
-        <input type="password" id="loginPassword" required placeholder="password">
-        <button class="login-btn" type="submit">Login</button>
-      </form>
+<main>
+  <div class="login-box">
+    <h2>School / Training Center Login</h2>
 
-      <div class="note">
-        <strong>Demo credentials:</strong> <br>
-        email: <code>demo.school@iibse.in</code> | password: <code>password123</code>
-      </div>
+    <form id="schoolLoginForm">
+      <label>Email</label>
+      <input type="email" id="loginEmail" required placeholder="school@example.com">
+
+      <label>Password</label>
+      <input type="password" id="loginPassword" required placeholder="password">
+
+      <button class="login-btn" type="submit">Login</button>
+    </form>
+
+    <p id="msg"></p>
+
+    <div class="note">
+      <strong>Demo credentials:</strong><br>
+      email: <code>demo.school@iibse.in</code> | password: <code>password123</code>
     </div>
-  </main>
+  </div>
+</main>
 
-  <script src="../js/school-panel.js"></script>
+<script>
+const backend = "https://iibse-website-1.onrender.com";
+
+document.getElementById("schoolLoginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+    const msg = document.getElementById("msg");
+    msg.innerText = "Checking... Please wait.";
+
+    try {
+        const res = await fetch(`${backend}/school/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            msg.style.color = "red";
+            msg.innerText = data.error || "Login failed.";
+            return;
+        }
+
+        // Save session
+        localStorage.setItem("school_id", data.school_id);
+        localStorage.setItem("school_name", data.school_name);
+        localStorage.setItem("approved", data.approved);
+        localStorage.setItem("isLogged", "true");
+
+        msg.style.color = "green";
+        msg.innerText = "Login successful! Redirecting...";
+
+        setTimeout(() => {
+            window.location.href = "school-dashboard.html";
+        }, 500);
+
+    } catch (err) {
+        msg.style.color = "red";
+        msg.innerText = "Server error. Try again.";
+    }
+});
+</script>
+
 </body>
 </html>
-
