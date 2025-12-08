@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Set School Modules</title>
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<h2>Assign Modules to a School</h2>
+
+<label>School ID</label>
+<input id="sid">
+
+<label>Modules (comma separated)</label>
+<input id="mods" placeholder="example: nursery,primary,secondary">
+
+<button onclick="setModules()">Update Modules</button>
+
+<p id="msg"></p>
+
+<script src="admin.js"></script>
+</body>
+</html>
