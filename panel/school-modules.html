@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Modules - IIBSE</title>
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+.box { 
+  padding: 12px; 
+  background: #eef; 
+  margin-bottom: 12px; 
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Approved Academic Modules</h2>
+<div id="modules"></div>
+
+<h3>Request New Module</h3>
+
+<label>Module Name</label>
+<input id="newModule">
+
+<button onclick="requestModule()">Request</button>
+
+<p id="msg"></p>
+
+<script>
+const db = supabase.createClient(
+ "https://phghqudhsmksakzlsygy.supabase.co",
+ "YOUR_ANON_KEY_HERE"
+);
+
+async function loadModules() {
+  let { data: schools } = await db.from("schools").select("*");
+  let s = schools[0];
+
+  let html = "";
+  (s.approved_modules || []).forEach(m => {
+    html += `<div class="box">Module: ${m}</div>`;
+  });
+
+  document.getElementById("modules").innerHTML = html;
+}
+
+async function requestModule() {
+  let module = newModule.value.trim();
+  if (!module) return;
+
+  await db.from("module_requests").insert({
+    school_id: 1,
+    requested_module: module
+  });
+
+  msg.innerText = "Module request submitted.";
+}
+
+loadModules();
+</script>
+
+</body>
+</html>
 
