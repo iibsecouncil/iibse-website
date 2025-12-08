@@ -174,6 +174,24 @@ app.get("/school/dashboard-data", async (req, res) => {
         res.status(500).json({ error: "Dashboard data error" });
     }
 });
+// 📌 FETCH ALL STUDENTS OF A SCHOOL
+app.get("/school/students", async (req, res) => {
+  const school_id = req.query.school_id;
+
+  try {
+    const { data, error } = await supabase
+      .from("students")
+      .select("*")
+      .eq("school_id", school_id)
+      .order("id", { ascending: false });
+
+    if (error) return res.status(400).json({ error });
+
+    return res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to load students" });
+  }
+});
 
 // -----------------------------------------------------
 // RUN BACKEND
