@@ -1,10 +1,15 @@
-// session-school.js  
-// Krishna's permanent SaaS-level security
+// session-school.js — Krishna Security System
 
 function checkSchoolSession() {
     const isLogged = localStorage.getItem("isLogged");
     const schoolId = localStorage.getItem("school_id");
 
     if (!isLogged || !schoolId) {
-        // Not logged in → redirect
-        window.location.href =
+        window.location.href = "school-login.html";
+    }
+}
+
+function logoutSchool() {
+    localStorage.clear();
+    window.location.href = "school-login.html";
+}
