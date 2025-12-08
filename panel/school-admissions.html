@@ -1,26 +1,139 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admissions — School Panel</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <style>.wrap{max-width:900px;margin:30px auto}.card{background:#fff;padding:16px;border-radius:8px}</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Admission — IIBSE Panel</title>
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+  body { background:#f0f4ff; }
+  .container {
+    max-width: 800px;
+    margin: 25px auto;
+    background:#fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+  }
+  h2 { color:#003b73; }
+  input, select {
+    width:100%;padding:10px;margin:10px 0;border-radius:6px;border:1px solid #ccc;
+  }
+  button {
+    padding:12px;background:#003b73;color:#fff;border:none;width:100%;
+    border-radius:6px;cursor:pointer;font-size:16px;
+  }
+  #msg { margin-top:12px;font-weight:bold;text-align:center; }
+</style>
 </head>
+
 <body>
-<header><div class="logo">IIBSE Panel</div></header>
-<div class="wrap">
-  <div class="card">
-    <h2>Admissions (Panel)</h2>
-    <p class="small">Use dashboard to add students quickly. This page is alternate UI.</p>
-    <div id="admissionsArea"></div>
-  </div>
+
+<header><div class="logo">IIBSE School Panel</div></header>
+
+<div class="container">
+  <h2>New Student Admission</h2>
+
+  <label>Student Name</label>
+  <input type="text" id="studentName">
+
+  <label>Class / Course</label>
+  <input type="text" id="studentClass">
+
+  <label>Admission Type</label>
+  <select id="admissionType">
+    <option value="">Select Type</option>
+    <option value="School">School (NEP 5+3+3+4)</option>
+    <option value="Skill">Skill Integrated</option>
+    <option value="Diploma">Diploma (After 10/12)</option>
+  </select>
+
+  <label>Referral ID (Optional)</label>
+  <input type="text" id="referralId">
+
+  <button onclick="submitAdmission()">Submit Admission</button>
+
+  <p id="msg"></p>
 </div>
-<script src="../js/school-panel.js"></script>
-  <script src="../js/session-school.js"></script>
+
 <script>
-  checkSchoolSession();
+const backend = "https://iibse-website-1.onrender.com";
+
+// Load allowed modules
+let allowedModules = [];
+
+async function loadModules() {
+  const schoolId = localStorage.getItem("school_id");
+
+  const res = await fetch(`${backend}/school/get-modules?school_id=${schoolId}`);
+  const data = await res.json();
+
+  allowedModules = data.modules || [];
+}
+loadModules();
+
+// Submit admission
+async function submitAdmission() {
+  const name = document.getElementById("studentName").value.trim();
+  const classCourse = document.getElementById("studentClass").value.trim();
+  const type = document.getElementById("admissionType").value;
+  const referral = document.getElementById("referralId").value.trim();
+  const msg = document.getElementById("msg");
+
+  if (!name || !classCourse || !type) {
+    msg.style.color = "red";
+    msg.innerText = "All fields are required.";
+    return;
+  }
+
+  // Check module permission
+  if (!allowedModules.includes(type)) {
+    alert("Your school does not have permission for this module. Apply for higher module.");
+    return;
+  }
+
+  const payload = {
+    school_id: localStorage.getItem("school_id"),
+    student_name: name,
+    class_course: classCourse,
+    admission_type: type,
+    referral_id: referral,
+    status: "pending",
+    fee_pending: true
+  };
+
+  try {
+    const res = await fetch(`${backend}/school/admission`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.style.color = "red";
+      msg.innerText = data.error || "Failed to submit.";
+      return;
+    }
+
+    msg.style.color = "green";
+    msg.innerText = "Admission Submitted Successfully!";
+
+    setTimeout(() => {
+      window.location.href = "school-students.html";
+    }, 800);
+
+  } catch (err) {
+    msg.style.color = "red";
+    msg.innerText = "Server error.";
+  }
+}
 </script>
+
+<script src="../js/session-school.js"></script>
+<script>checkSchoolSession();</script>
 
 </body>
 </html>
-
