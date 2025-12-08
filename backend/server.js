@@ -1,5 +1,5 @@
 // -----------------------------------------------------
-// IIBSE BACKEND — Complete Server.js (Krishna Final Version)
+// IIBSE BACKEND — COMPLETE SERVER.JS (KRISHNA FINAL VERSION)
 // -----------------------------------------------------
 
 import express from "express";
@@ -19,179 +19,138 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE);
 
 // ---------------- ROOT TEST ----------------
 app.get("/", (req, res) => {
-  res.send("IIBSE Backend is Running — Jai Shri Krishna 🚀");
+  res.send("IIBSE Backend Running — Jai Shri Krishna 🚀");
 });
 
 // -----------------------------------------------------
 // 1️⃣ SCHOOL LOGIN API
 // -----------------------------------------------------
 app.post("/school/login", async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        const { data, error } = await supabase
-            .from("schools")
-            .select("*")
-            .eq("email", email)
-            .eq("password", password)
-            .single();
+  try {
+    const { data, error } = await supabase
+      .from("schools")
+      .select("*")
+      .eq("email", email)
+      .eq("password", password)
+      .single();
 
-        if (error || !data) {
-            return res.status(401).json({ error: "Invalid email or password" });
-        }
-
-        return res.json({
-            school_id: data.id,
-            school_name: data.school_name,
-            approved: data.approved
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ error: "Server login error" });
+    if (error || !data) {
+      return res.status(401).json({ error: "Invalid email or password" });
     }
+
+    return res.json({
+      school_id: data.id,
+      school_name: data.school_name,
+      approved: data.approved
+    });
+  } catch (err) {
+    return res.status(500).json({ error: "Login error" });
+  }
 });
 
 // -----------------------------------------------------
 // 2️⃣ ADD NOTICE (ADMIN)
 // -----------------------------------------------------
 app.post("/admin/notices/add", async (req, res) => {
-    const { title, message } = req.body;
+  const { title, message } = req.body;
 
-    try {
-        const { error } = await supabase.from("notices").insert([{ title, message }]);
+  const { error } = await supabase.from("notices").insert([{ title, message }]);
 
-        if (error) return res.status(400).json({ error });
+  if (error) return res.status(400).json({ error });
 
-        return res.json({ success: true, message: "Notice added" });
-    } catch (err) {
-        res.status(500).json({ error: "Notice add failed" });
-    }
+  return res.json({ success: true, message: "Notice Added" });
 });
 
 // -----------------------------------------------------
-// 3️⃣ GET ALL NOTICES
+// 3️⃣ GET NOTICES
 // -----------------------------------------------------
 app.get("/notices", async (req, res) => {
-    try {
-        const { data, error } = await supabase
-            .from("notices")
-            .select("*")
-            .order("id", { ascending: false });
+  const { data, error } = await supabase
+    .from("notices")
+    .select("*")
+    .order("id", { ascending: false });
 
-        if (error) return res.status(400).json({ error });
+  if (error) return res.status(400).json({ error });
 
-        return res.json(data);
-    } catch (err) {
-        res.status(500).json({ error: "Failed loading notices" });
-    }
+  return res.json(data);
 });
 
 // -----------------------------------------------------
 // 4️⃣ APPROVE SCHOOL (ADMIN)
 // -----------------------------------------------------
 app.post("/admin/approve-school", async (req, res) => {
-    const { school_id } = req.body;
+  const { school_id } = req.body;
 
-    try {
-        const { error } = await supabase
-            .from("schools")
-            .update({ approved: true })
-            .eq("id", school_id);
+  const { error } = await supabase
+    .from("schools")
+    .update({ approved: true })
+    .eq("id", school_id);
 
-        if (error) return res.status(400).json({ error });
+  if (error) return res.status(400).json({ error });
 
-        return res.json({ success: true, message: "School approved" });
-    } catch (err) {
-        res.status(500).json({ error: "Approval error" });
-    }
+  return res.json({ success: true });
 });
 
 // -----------------------------------------------------
 // 5️⃣ UPDATE SCHOOL MODULES (ADMIN)
 // -----------------------------------------------------
 app.post("/admin/set-modules", async (req, res) => {
-    const { school_id, modules } = req.body;
+  const { school_id, modules } = req.body;
 
-    try {
-        const { error } = await supabase
-            .from("schools")
-            .update({ allowed_modules: modules })
-            .eq("id", school_id);
+  const { error } = await supabase
+    .from("schools")
+    .update({ allowed_modules: modules })
+    .eq("id", school_id);
 
-        if (error) return res.status(400).json({ error });
+  if (error) return res.status(400).json({ error });
 
-        return res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: "Module update failed" });
-    }
+  return res.json({ success: true });
 });
 
 // -----------------------------------------------------
-// 6️⃣ SCHOOL DASHBOARD DATA (NEW)
+// 6️⃣ SCHOOL DASHBOARD DATA
 // -----------------------------------------------------
 app.get("/school/dashboard-data", async (req, res) => {
-    const school_id = req.query.school_id;
-
-    if (!school_id) {
-        return res.status(400).json({ error: "school_id required" });
-    }
-
-    try {
-        // TOTAL STUDENTS
-        const totalStudents = await supabase
-            .from("students")
-            .select("*", { count: "exact" })
-            .eq("school_id", school_id);
-
-        // PENDING STUDENTS
-        const pendingStudents = await supabase
-            .from("students")
-            .select("*", { count: "exact" })
-            .eq("school_id", school_id)
-            .eq("status", "pending");
-
-        // NOTICES
-        const noticeCount = await supabase
-            .from("notices")
-            .select("*", { count: "exact" });
-
-        // FEES PENDING
-        const pendingFees = await supabase
-            .from("payments")
-            .select("*", { count: "exact" })
-            .eq("school_id", school_id)
-            .eq("status", "pending");
-
-        return res.json({
-            totalStudents: totalStudents.count || 0,
-            pendingStudents: pendingStudents.count || 0,
-            noticeCount: noticeCount.count || 0,
-            pendingFees: (pendingFees.count || 0) * 1000  // example fee logic
-        });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Dashboard data error" });
-    }
-});
-// 📌 FETCH ALL STUDENTS OF A SCHOOL
-app.get("/school/students", async (req, res) => {
   const school_id = req.query.school_id;
 
   try {
-    const { data, error } = await supabase
+    const totalStudents = await supabase
       .from("students")
-      .select("*")
+      .select("*", { count: "exact" })
+      .eq("school_id", school_id);
+
+    const pendingStudents = await supabase
+      .from("students")
+      .select("*", { count: "exact" })
       .eq("school_id", school_id)
-      .order("id", { ascending: false });
+      .eq("status", "pending");
 
-    if (error) return res.status(400).json({ error });
+    const noticeCount = await supabase
+      .from("notices")
+      .select("*", { count: "exact" });
 
-    return res.json(data);
+    const pendingFees = await supabase
+      .from("payments")
+      .select("*", { count: "exact" })
+      .eq("school_id", school_id)
+      .eq("status", "pending");
+
+    return res.json({
+      totalStudents: totalStudents.count || 0,
+      pendingStudents: pendingStudents.count || 0,
+      noticeCount: noticeCount.count || 0,
+      pendingFees: (pendingFees.count || 0) * 1000
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to load students" });
+    return res.status(500).json({ error: "Dashboard error" });
   }
 });
+
+// -----------------------------------------------------
+// 7️⃣ GET ALLOWED MODULES FOR SCHOOL
+// -----------------------------------------------------
 app.get("/school/get-modules", async (req, res) => {
   const school_id = req.query.school_id;
 
@@ -207,9 +166,56 @@ app.get("/school/get-modules", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// RUN BACKEND
+// 8️⃣ SUBMIT ADMISSION (INSERT STUDENT)
 // -----------------------------------------------------
+app.post("/school/admission", async (req, res) => {
+  const {
+    school_id,
+    student_name,
+    class_course,
+    admission_type,
+    referral_id,
+    status,
+    fee_pending
+  } = req.body;
 
+  const { error } = await supabase.from("students").insert([
+    {
+      school_id,
+      student_name,
+      class_course,
+      admission_type,
+      referral_id,
+      status,
+      fee_pending
+    }
+  ]);
+
+  if (error) return res.status(400).json({ error });
+
+  res.json({ success: true, message: "Admission stored" });
+});
+
+// -----------------------------------------------------
+// 9️⃣ GET ALL STUDENTS OF SCHOOL
+// -----------------------------------------------------
+app.get("/school/students", async (req, res) => {
+  const school_id = req.query.school_id;
+
+  const { data, error } = await supabase
+    .from("students")
+    .select("*")
+    .eq("school_id", school_id)
+    .order("id", { ascending: false });
+
+  if (error) return res.status(400).json({ error });
+
+  res.json(data);
+});
+
+// -----------------------------------------------------
+// START SERVER
+// -----------------------------------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`IIBSE Backend LIVE on PORT ${PORT}`);
