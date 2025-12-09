@@ -1,5 +1,5 @@
-// -----------------------------------------------------
-// IIBSE BACKEND — SERVER.JS (KRISHNA FINAL VERSION)
+// ----------------------------------------------------- 
+// IIBSE BACKEND — SERVER.JS (KRISHNA FINAL COMPLETE VERSION)
 // -----------------------------------------------------
 import express from "express";
 import cors from "cors";
@@ -10,13 +10,12 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 
-// Supabase connection - NOTE: set env var name exactly: supabase_service_role1
+// Supabase connection - set env var exactly: supabase_service_role1
 const SUPABASE_URL = process.env.SUPABASE_URL || "https://phghqudhsmksakzlsygy.supabase.co";
 const SUPABASE_SERVICE_ROLE = process.env.supabase_service_role1;
 
 if (!SUPABASE_SERVICE_ROLE) {
-  console.error("ERROR: Environment variable 'supabase_service_role1' is not set!");
-  // do not crash the process; logs will show the issue
+  console.error("ERROR: 'supabase_service_role1' environment variable missing!");
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE);
@@ -31,7 +30,6 @@ app.get("/", (req, res) => {
 // -----------------------------------------------------
 app.post("/school/login", async (req, res) => {
   const { email, password } = req.body || {};
-
   if (!email || !password) return res.status(400).json({ error: "Missing credentials" });
 
   try {
@@ -42,9 +40,7 @@ app.post("/school/login", async (req, res) => {
       .eq("password", password)
       .single();
 
-    if (error || !data) {
-      return res.status(401).json({ error: "Invalid email or password" });
-    }
+    if (error || !data) return res.status(401).json({ error: "Invalid email or password" });
 
     return res.json({
       success: true,
@@ -52,6 +48,7 @@ app.post("/school/login", async (req, res) => {
       school_name: data.school_name,
       approved: data.approved || false
     });
+
   } catch (err) {
     console.error("Login error:", err);
     return res.status(500).json({ error: "Login error" });
@@ -68,6 +65,7 @@ app.post("/admin/notices/add", async (req, res) => {
   try {
     const { error } = await supabase.from("notices").insert([{ title, message }]);
     if (error) return res.status(400).json({ error: error.message });
+
     return res.json({ success: true, message: "Notice Added" });
   } catch (err) {
     console.error("Add notice error:", err);
@@ -108,6 +106,7 @@ app.post("/admin/approve-school", async (req, res) => {
 
     if (error) return res.status(400).json({ error: error.message });
     return res.json({ success: true });
+
   } catch (err) {
     console.error("Approve school error:", err);
     return res.status(500).json({ error: "Server error" });
@@ -116,15 +115,13 @@ app.post("/admin/approve-school", async (req, res) => {
 
 // -----------------------------------------------------
 // 5️⃣ UPDATE SCHOOL MODULES (ADMIN)
-// body: { school_id, modules } (modules = array or JSON string)
 // -----------------------------------------------------
 app.post("/admin/set-modules", async (req, res) => {
   let { school_id, modules } = req.body || {};
   if (!school_id) return res.status(400).json({ error: "Missing school_id" });
 
-  // allow modules sent as JSON string from some clients
   if (typeof modules === "string") {
-    try { modules = JSON.parse(modules); } catch (e) { /* ignore parse error */ }
+    try { modules = JSON.parse(modules); } catch {}
   }
 
   try {
@@ -135,6 +132,7 @@ app.post("/admin/set-modules", async (req, res) => {
 
     if (error) return res.status(400).json({ error: error.message });
     return res.json({ success: true });
+
   } catch (err) {
     console.error("Set modules error:", err);
     return res.status(500).json({ error: "Server error" });
@@ -143,41 +141,30 @@ app.post("/admin/set-modules", async (req, res) => {
 
 // -----------------------------------------------------
 // 6️⃣ SCHOOL DASHBOARD DATA
-// GET /school/dashboard-data?school_id=...
 // -----------------------------------------------------
 app.get("/school/dashboard-data", async (req, res) => {
   const school_id = req.query.school_id;
   if (!school_id) return res.status(400).json({ error: "Missing school_id" });
 
   try {
-    const totalStudents = await supabase
-      .from("students")
-      .select("id", { count: "exact" })
-      .eq("school_id", school_id);
+    const total = await supabase
+      .from("students").select("id", { count: "exact" }).eq("school_id", school_id);
 
-    const pendingStudents = await supabase
-      .from("students")
-      .select("id", { count: "exact" })
-      .eq("school_id", school_id)
-      .eq("status", "pending");
+    const pending = await supabase
+      .from("students").select("id", { count: "exact" }).eq("school_id", school_id).eq("status", "pending");
 
-    const noticeCount = await supabase
-      .from("notices")
-      .select("id", { count: "exact" });
+    const notices = await supabase.from("notices").select("id", { count: "exact" });
 
-    const pendingFees = await supabase
-      .from("payments")
-      .select("id", { count: "exact" })
-      .eq("school_id", school_id)
-      .eq("status", "pending");
+    const feePending = await supabase
+      .from("payments").select("id", { count: "exact" }).eq("school_id", school_id).eq("status", "pending");
 
     return res.json({
-      totalStudents: totalStudents.count || 0,
-      pendingStudents: pendingStudents.count || 0,
-      noticeCount: noticeCount.count || 0,
-      // if you have real amounts, change this; for now keep count * placeholder
-      pendingFeesAmount: (pendingFees.count || 0) * 1000
+      totalStudents: total.count || 0,
+      pendingStudents: pending.count || 0,
+      noticeCount: notices.count || 0,
+      pendingFeesAmount: (feePending.count || 0) * 1000
     });
+
   } catch (err) {
     console.error("Dashboard error:", err);
     return res.status(500).json({ error: "Dashboard error" });
@@ -185,8 +172,7 @@ app.get("/school/dashboard-data", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 7️⃣ GET ALLOWED MODULES FOR SCHOOL
-// GET /school/get-modules?school_id=...
+// 7️⃣ GET ALLOWED MODULES
 // -----------------------------------------------------
 app.get("/school/get-modules", async (req, res) => {
   const school_id = req.query.school_id;
@@ -200,7 +186,9 @@ app.get("/school/get-modules", async (req, res) => {
       .single();
 
     if (error) return res.status(400).json({ error: error.message });
+
     res.json({ modules: data?.allowed_modules || [] });
+
   } catch (err) {
     console.error("Get modules error:", err);
     return res.status(500).json({ error: "Server error" });
@@ -208,9 +196,7 @@ app.get("/school/get-modules", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 8️⃣ SUBMIT ADMISSION (INSERT STUDENT)
-// POST /school/admission
-// body: { school_id, student_name, class_course, admission_type, referral_id, status, fee_pending }
+// 8️⃣ SUBMIT ADMISSION
 // -----------------------------------------------------
 app.post("/school/admission", async (req, res) => {
   const {
@@ -223,23 +209,24 @@ app.post("/school/admission", async (req, res) => {
     fee_pending = 0
   } = req.body || {};
 
-  if (!school_id || !student_name) return res.status(400).json({ error: "Missing data" });
+  if (!school_id || !student_name)
+    return res.status(400).json({ error: "Missing required data" });
 
   try {
-    const { error } = await supabase.from("students").insert([
-      {
-        school_id,
-        student_name,
-        class_course,
-        admission_type,
-        referral_id,
-        status,
-        fee_pending
-      }
-    ]);
+    const { error } = await supabase.from("students").insert([{
+      school_id,
+      student_name,
+      class_course,
+      admission_type,
+      referral_id,
+      status,
+      fee_pending
+    }]);
 
     if (error) return res.status(400).json({ error: error.message });
+
     res.json({ success: true, message: "Admission stored" });
+
   } catch (err) {
     console.error("Admission error:", err);
     return res.status(500).json({ error: "Server error" });
@@ -247,8 +234,7 @@ app.post("/school/admission", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 9️⃣ GET ALL STUDENTS OF SCHOOL
-// GET /school/students?school_id=...
+// 🔹 9️⃣ GET ALL STUDENTS
 // -----------------------------------------------------
 app.get("/school/students", async (req, res) => {
   const school_id = req.query.school_id;
@@ -262,9 +248,77 @@ app.get("/school/students", async (req, res) => {
       .order("id", { ascending: false });
 
     if (error) return res.status(400).json({ error: error.message });
+
     res.json(data || []);
+
   } catch (err) {
     console.error("Get students error:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// -----------------------------------------------------
+// 🔟 GET SCHOOL PROFILE DETAILS
+// -----------------------------------------------------
+app.get("/school/details", async (req, res) => {
+  const school_id = req.query.school_id;
+
+  if (!school_id)
+    return res.status(400).json({ error: "school_id is required" });
+
+  try {
+    const { data, error } = await supabase
+      .from("schools")
+      .select("*")
+      .eq("id", school_id)
+      .single();
+
+    if (error) return res.status(400).json({ error: "School not found" });
+
+    return res.json({ success: true, school: data });
+
+  } catch (err) {
+    console.error("Get school profile error:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// -----------------------------------------------------
+// 🔟 UPDATE SCHOOL PROFILE
+// -----------------------------------------------------
+app.post("/school/update-profile", async (req, res) => {
+  const {
+    school_id,
+    school_name,
+    principal_name,
+    phone,
+    address,
+    website,
+    logo_url
+  } = req.body || {};
+
+  if (!school_id)
+    return res.status(400).json({ error: "school_id is required" });
+
+  try {
+    const { error } = await supabase
+      .from("schools")
+      .update({
+        school_name,
+        principal_name,
+        phone,
+        address,
+        website,
+        logo_url
+      })
+      .eq("id", school_id);
+
+    if (error) return res.status(400).json({ error: "Update failed" });
+
+    return res.json({ success: true, message: "Profile updated successfully" });
+
+  } catch (err) {
+    console.error("Update profile error:", err);
     return res.status(500).json({ error: "Server error" });
   }
 });
