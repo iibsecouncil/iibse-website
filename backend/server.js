@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
 // -----------------------------------------------------
 // 1️⃣ SCHOOL LOGIN API
 // -----------------------------------------------------
+// SCHOOL LOGIN API
 app.post("/school/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -41,10 +42,12 @@ app.post("/school/login", async (req, res) => {
     }
 
     return res.json({
+      success: true,
       school_id: data.id,
       school_name: data.school_name,
       approved: data.approved
     });
+
   } catch (err) {
     return res.status(500).json({ error: "Login error" });
   }
