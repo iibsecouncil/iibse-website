@@ -1,20 +1,48 @@
-
 // ===============================
-//  SIMPLE FORM HANDLING SCRIPT
+//  IIBSE FORM HANDLING SCRIPT
 // ===============================
 
-// ------- AFFILIATION FORM -------
+
+// ------- SCHOOL AFFILIATION FORM -------
 const affiliationForm = document.getElementById("affiliationForm");
 
 if (affiliationForm) {
-    affiliationForm.addEventListener("submit", function (e) {
-        e.preventDefault();
+  affiliationForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-        alert("Thank you! Your Institution Affiliation Application has been submitted successfully.");
+    const data = {
+      name: affiliationForm.querySelector("[name='name']")?.value.trim(),
+      email: affiliationForm.querySelector("[name='email']")?.value.trim(),
+      password: affiliationForm.querySelector("[name='password']")?.value.trim(),
+      type: affiliationForm.querySelector("[name='type']")?.value || "school"
+    };
 
-        // Reset form
+    if (!data.name || !data.email || !data.password) {
+      alert("Please fill all required fields.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/apply-school", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        alert(result.message || "School affiliation application submitted successfully.");
         affiliationForm.reset();
-    });
+      } else {
+        alert(result.message || "Submission failed. Please try again.");
+      }
+
+    } catch (err) {
+      console.error("Affiliation form error:", err);
+      alert("Server error. Please try again later.");
+    }
+  });
 }
 
 
@@ -23,13 +51,10 @@ if (affiliationForm) {
 const adviserForm = document.getElementById("adviserForm");
 
 if (adviserForm) {
-    adviserForm.addEventListener("submit", function (e) {
-        e.preventDefault();
+  adviserForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-        alert("Thank you! Your Adviser Registration Form has been submitted successfully.");
-
-        // Reset form
-        adviserForm.reset();
-    });
-}
+    const data = {
+      full_name: adviserForm.querySelector("[name='fullname']").value.trim(),
+      mobile: adviserForm.querySelector("
 
