@@ -56,5 +56,45 @@ if (adviserForm) {
 
     const data = {
       full_name: adviserForm.querySelector("[name='fullname']").value.trim(),
-      mobile: adviserForm.querySelector("
+      mobile: adviserForm.querySelector("[name='mobile']").value.trim(),
+      email: adviserForm.querySelector("[name='email']").value.trim(),
+      state: adviserForm.querySelector("[name='state']").value.trim(),
+      district: adviserForm.querySelector("[name='district']").value.trim(),
+      address: adviserForm.querySelector("[name='address']").value.trim(),
+      upi: adviserForm.querySelector("[name='upi']").value.trim()
+    };
 
+    if (
+      !data.full_name ||
+      !data.mobile ||
+      !data.state ||
+      !data.district ||
+      !data.address ||
+      !data.upi
+    ) {
+      alert("Please fill all required fields.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/apply-adviser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        alert(result.message || "Adviser registration submitted successfully.");
+        adviserForm.reset();
+      } else {
+        alert(result.message || "Submission failed. Please try again.");
+      }
+
+    } catch (err) {
+      console.error("Adviser form error:", err);
+      alert("Server error. Please try again later.");
+    }
+  });
+}
