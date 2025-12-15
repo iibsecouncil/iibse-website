@@ -1,6 +1,7 @@
-// ----------------------------------------------------- 
-// IIBSE BACKEND — SERVER.JS (FULL MERGED PRODUCTION VERSION)
 // -----------------------------------------------------
+// IIBSE BACKEND — SERVER.JS (FINAL PRODUCTION VERSION)
+// -----------------------------------------------------
+
 import express from "express";
 import cors from "cors";
 import { createClient } from "@supabase/supabase-js";
@@ -24,6 +25,29 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE);
 // ---------------- ROOT TEST ----------------
 app.get("/", (req, res) => {
   res.send("IIBSE Backend Running — Jai Shri Krishna 🚀");
+});
+
+// -----------------------------------------------------
+// 🔹 ACTIVE FEES (FIXED & REQUIRED)
+// -----------------------------------------------------
+app.get("/fees/active", async (req, res) => {
+  const { data, error } = await supabase
+    .from("fee_master")
+    .select("*")
+    .eq("active", true)
+    .order("amount", { ascending: true });
+
+  if (error) {
+    return res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+
+  res.json({
+    success: true,
+    data
+  });
 });
 
 // -----------------------------------------------------
@@ -151,15 +175,17 @@ app.post("/school/admission", async (req, res) => {
   if (!school_id || !student_name)
     return res.status(400).json({ error: "Missing required data" });
 
-  const { error } = await supabase.from("students").insert([{
-    school_id,
-    student_name,
-    class_course,
-    admission_type,
-    referral_id,
-    status,
-    fee_pending
-  }]);
+  const { error } = await supabase.from("students").insert([
+    {
+      school_id,
+      student_name,
+      class_course,
+      admission_type,
+      referral_id,
+      status,
+      fee_pending
+    }
+  ]);
 
   if (error) return res.status(400).json({ error: error.message });
   res.json({ success: true, message: "Admission stored" });
@@ -227,7 +253,7 @@ app.post("/school/update-profile", async (req, res) => {
 });
 
 // =====================================================
-// 🔐 ADMIN VERIFICATION — NEW (MERGED SAFELY)
+// 🔐 ADMIN VERIFICATION
 // =====================================================
 
 // 🔹 PENDING SCHOOLS
@@ -285,7 +311,7 @@ app.post("/admin/approve-adviser", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// START SERVER
+// START SERVER (RENDER SAFE)
 // -----------------------------------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
