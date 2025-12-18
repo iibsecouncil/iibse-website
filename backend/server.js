@@ -40,9 +40,9 @@ app.post("/school/apply", async (req, res) => {
     .from("schools")
     .insert([{ ...req.body, status: "pending" }]);
 
-  if (error)
+  if (error) {
     return res.status(500).json({ success: false, error: error.message });
-
+  }
   res.json({ success: true, data });
 });
 
@@ -52,21 +52,22 @@ app.get("/admin/pending-schools", async (req, res) => {
     .select("*")
     .eq("status", "pending");
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true, data });
 });
 
 app.post("/admin/approve-school", async (req, res) => {
   const { id } = req.body;
-  if (!id)
+  if (!id) {
     return res.status(400).json({ success: false, error: "School ID missing" });
+  }
 
   const { error } = await supabase
     .from("schools")
     .update({ status: "approved" })
     .eq("id", id);
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true });
 });
 
@@ -78,7 +79,7 @@ app.post("/adviser/apply", async (req, res) => {
     .from("advisers")
     .insert([{ ...req.body, status: "pending" }]);
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true, data });
 });
 
@@ -88,23 +89,22 @@ app.get("/admin/pending-advisers", async (req, res) => {
     .select("*")
     .eq("status", "pending");
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true, data });
 });
 
 app.post("/admin/approve-adviser", async (req, res) => {
   const { id } = req.body;
-  if (!id)
-    return res
-      .status(400)
-      .json({ success: false, error: "Adviser ID missing" });
+  if (!id) {
+    return res.status(400).json({ success: false, error: "Adviser ID missing" });
+  }
 
   const { error } = await supabase
     .from("advisers")
     .update({ status: "approved" })
     .eq("id", id);
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true });
 });
 
@@ -118,9 +118,9 @@ app.get("/fees/active", async (req, res) => {
     .eq("active", true)
     .order("amount", { ascending: true });
 
-  if (error)
+  if (error) {
     return res.status(500).json({ success: false, error: error.message });
-
+  }
   res.json({ success: true, data });
 });
 
@@ -136,13 +136,7 @@ app.post("/student/submit-payment", async (req, res) => {
     transaction_date
   } = req.body || {};
 
-  if (
-    !student_id ||
-    !fee_code ||
-    !amount ||
-    !transaction_id ||
-    !transaction_date
-  ) {
+  if (!student_id || !fee_code || !amount || !transaction_id || !transaction_date) {
     return res.status(400).json({
       success: false,
       error: "Missing required payment fields"
@@ -160,8 +154,9 @@ app.post("/student/submit-payment", async (req, res) => {
     }
   ]);
 
-  if (error)
+  if (error) {
     return res.status(500).json({ success: false, error: error.message });
+  }
 
   res.json({
     success: true,
@@ -171,15 +166,16 @@ app.post("/student/submit-payment", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 🔹 STUDENT PAYMENT STATUS (🔥 MISSING FIX — ADDED)
+// 🔹 STUDENT PAYMENT STATUS
 // -----------------------------------------------------
 app.get("/student/payments", async (req, res) => {
   const { student_id } = req.query;
 
   if (!student_id) {
-    return res
-      .status(400)
-      .json({ success: false, error: "student_id required" });
+    return res.status(400).json({
+      success: false,
+      error: "student_id required"
+    });
   }
 
   const { data, error } = await supabase
@@ -188,8 +184,9 @@ app.get("/student/payments", async (req, res) => {
     .eq("student_id", student_id)
     .order("submitted_at", { ascending: false });
 
-  if (error)
+  if (error) {
     return res.status(500).json({ success: false, error: error.message });
+  }
 
   res.json({ success: true, data });
 });
@@ -204,39 +201,57 @@ app.get("/admin/pending-payments", async (req, res) => {
     .eq("status", "pending")
     .order("submitted_at", { ascending: false });
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+
   res.json({ success: true, data });
 });
 
 app.post("/admin/verify-payment", async (req, res) => {
   const { payment_id } = req.body;
-  if (!payment_id)
-    return res
-      .status(400)
-      .json({ success: false, error: "Payment ID missing" });
+
+  if (!payment_id) {
+    return res.status(400).json({
+      success: false,
+      error: "Payment ID missing"
+    });
+  }
 
   const { error } = await supabase
     .from("payments")
-    .update({ status: "verified", verified_at: new Date() })
+    .update({
+      status: "verified",
+      verified_at: new Date()
+    })
     .eq("id", payment_id);
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+
   res.json({ success: true });
 });
 
 app.post("/admin/reject-payment", async (req, res) => {
   const { payment_id } = req.body;
-  if (!payment_id)
-    return res
-      .status(400)
-      .json({ success: false, error: "Payment ID missing" });
+
+  if (!payment_id) {
+    return res.status(400).json({
+      success: false,
+      error: "Payment ID missing"
+    });
+  }
 
   const { error } = await supabase
     .from("payments")
     .update({ status: "rejected" })
     .eq("id", payment_id);
 
-  if (error) return res.status(500).json({ success: false });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+
   res.json({ success: true });
 });
 
