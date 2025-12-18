@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payments Verification | IIBSE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      color: #003b73;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #003b73;
+      color: #fff;
+    }
+    button {
+      padding: 6px 10px;
+      border: none;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    .approve {
+      background: green;
+      color: #fff;
+    }
+    .reject {
+      background: red;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>💳 Pending Payments (Manual Verification)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Student ID</th>
+      <th>Fee Code</th>
+      <th>Amount</th>
+      <th>Transaction ID</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="paymentsBody">
+    <tr>
+      <td colspan="6">Loading payments...</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  // 🔴 LIVE BACKEND
+  const API_BASE = "https://iibse-website-1.onrender.com";
+
+  async function loadPayments() {
+    try {
+      const res = await fetch(API_BASE + "/admin/pending-payments");
+      const json = await res.json();
+
+      const tbody = document.getElementById("paymentsBody");
+      tbody.innerHTML = "";
+
+      if (!json.success || json.data.length === 0) {
+        tbody.innerHTML =
+          "<tr><td colspan='6'>No pending payments</td></tr>";
+        return;
+      }
+
+      json.data.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${p.student_id}</td>
+          <td>${p.fee_code}</td>
+          <td>₹${p.amount}</td>
+          <td>${p.transaction_id}</td>
+          <td>${p.status}</td>
+          <td>
+            <button class="approve" onclick="verifyPayment('${p.id}')">Approve</button>
+            <button class="reject" onclick="rejectPayment('${p.id}')">Reject</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+    } catch (err) {
+      alert("Failed to load payments");
+      console.error(err);
+    }
+  }
+
+  async function verifyPayment(id) {
+    if (!confirm("Approve this payment?")) return;
+
+    await fetch(API_BASE + "/admin/verify-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payment_id: id })
+    });
+
+    loadPayments();
+  }
+
+  async function rejectPayment(id) {
+    if (!confirm("Reject this payment?")) return;
+
+    await fetch(API_BASE + "/admin/reject-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payment_id: id })
+    });
+
+    loadPayments();
+  }
+
+  // Load on page open
+  loadPayments();
+</script>
+
+</body>
+</html>
