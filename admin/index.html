@@ -1,17 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>IIBSE Admin Panel</title>
-<link rel="stylesheet" href="../style.css">
+  <title>Admin Login | IIBSE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; background:#f4f6f9; }
+    .box {
+      max-width: 400px;
+      margin: 120px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    button {
+      background:#003b73;
+      color:#fff;
+      border:none;
+      cursor:pointer;
+    }
+    .error { color:red; margin-top:10px; }
+  </style>
 </head>
-
 <body>
 
-<h2>Admin Panel</h2>
+<div class="box">
+  <h2>IIBSE Staff Login</h2>
 
-<a href="add-notice.html" class="btn">➕ Add Notice</a><br>
-<a href="approve-schools.html" class="btn">✔ Approve Schools</a><br>
-<a href="set-modules.html" class="btn">📘 Set Modules</a><br>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+  <div id="error" class="error"></div>
+</div>
+
+<script>
+  function login() {
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+
+    // TEMP credentials (change later)
+    if (u === "admin" && p === "iibse@123") {
+      localStorage.setItem("staffLoggedIn", "true");
+      window.location.href = "approve-schools.html";
+    } else {
+      document.getElementById("error").innerText = "Invalid login details";
+    }
+  }
+</script>
 
 </body>
 </html>
