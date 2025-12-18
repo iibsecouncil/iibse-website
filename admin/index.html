@@ -40,13 +40,39 @@
 </div>
 
 <script>
+  const users = {
+    admin: "Iibse@123",
+    accounts: "Iibse@456",
+    verifier: "Iibse@789"
+  };
+
   function login() {
     const u = document.getElementById("username").value;
     const p = document.getElementById("password").value;
 
-    // TEMP credentials (change later)
-    if (u === "admin" && p === "iibse@123") {
+    if (users[u] && users[u] === p) {
       localStorage.setItem("staffLoggedIn", "true");
+      localStorage.setItem("staffRole", u); // role save
+      window.location.href = "approve-schools.html";
+    } else {
+      document.getElementById("error").innerText = "Invalid login details";
+    }
+  }
+</script>
+<script>
+  const users = {
+    admin: "Iibse@123",
+    accounts: "Iibse@456",
+    verifier: "Iibse@789"
+  };
+
+  function login() {
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+
+    if (users[u] && users[u] === p) {
+      localStorage.setItem("staffLoggedIn", "true");
+      localStorage.setItem("staffRole", u); // role save
       window.location.href = "approve-schools.html";
     } else {
       document.getElementById("error").innerText = "Invalid login details";
