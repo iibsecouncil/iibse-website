@@ -1,3 +1,5 @@
+import adminReadRoutes from "./routes/adminRead.js";
+
 // -----------------------------------------------------
 // IIBSE BACKEND — FINAL CLEAN SERVER.JS (PRODUCTION READY)
 // -----------------------------------------------------
