@@ -11,7 +11,10 @@ router.get("/advisers", requireAdmin, async (req, res) => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
   res.json(data);
 });
 
@@ -22,7 +25,10 @@ router.get("/schools", requireAdmin, async (req, res) => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
   res.json(data);
 });
 
@@ -33,7 +39,10 @@ router.get("/payments", requireAdmin, async (req, res) => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
   res.json(data);
 });
 
