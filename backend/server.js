@@ -1,26 +1,12 @@
-console.log("=== IIBSE SERVER.JS LOADED ===");
-
-import express from "express";
-import cors from "cors";
-import adminReadRoutes from "./routes/adminRead.js";
-
-const app = express();
-
-app.use(cors());
-app.use(express.json({ limit: "1mb" }));
-
-app.use("/admin", adminReadRoutes);
-
-
-
 // -----------------------------------------------------
-// IIBSE BACKEND — FINAL CLEAN SERVER.JS (PRODUCTION READY)
+// IIBSE BACKEND — CLEAN & FIXED SERVER.JS
 // -----------------------------------------------------
 
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { createClient } from "@supabase/supabase-js";
+import adminReadRoutes from "./routes/adminRead.js";
 
 dotenv.config();
 
@@ -29,12 +15,19 @@ const app = express();
 // ⚠️ Render auto-assigns PORT
 const PORT = process.env.PORT || 5000;
 
+// -----------------------------------------------------
+// MIDDLEWARE
+// -----------------------------------------------------
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
+
+// -----------------------------------------------------
+// ADMIN ROUTES (DASHBOARD READ)
+// -----------------------------------------------------
 app.use("/admin", adminReadRoutes);
 
 // -----------------------------------------------------
-// 🔐 SUPABASE CLIENT
+// SUPABASE CLIENT
 // -----------------------------------------------------
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -42,14 +35,14 @@ const supabase = createClient(
 );
 
 // -----------------------------------------------------
-// 🔹 BASIC TEST
+// BASIC TEST
 // -----------------------------------------------------
 app.get("/", (req, res) => {
   res.send("IIBSE Backend Running — Jai Shri Krishna 🚀");
 });
 
 // -----------------------------------------------------
-// 🔹 SCHOOL AFFILIATION
+// SCHOOL AFFILIATION
 // -----------------------------------------------------
 app.post("/school/apply", async (req, res) => {
   const { data, error } = await supabase
@@ -68,7 +61,9 @@ app.get("/admin/pending-schools", async (req, res) => {
     .select("*")
     .eq("status", "pending");
 
-  if (error) return res.status(500).json({ success: false, error: error.message });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
   res.json({ success: true, data });
 });
 
@@ -83,19 +78,23 @@ app.post("/admin/approve-school", async (req, res) => {
     .update({ status: "approved" })
     .eq("id", id);
 
-  if (error) return res.status(500).json({ success: false, error: error.message });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
   res.json({ success: true });
 });
 
 // -----------------------------------------------------
-// 🔹 ADVISER
+// ADVISER
 // -----------------------------------------------------
 app.post("/adviser/apply", async (req, res) => {
   const { data, error } = await supabase
     .from("advisers")
     .insert([{ ...req.body, status: "pending" }]);
 
-  if (error) return res.status(500).json({ success: false, error: error.message });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
   res.json({ success: true, data });
 });
 
@@ -105,7 +104,9 @@ app.get("/admin/pending-advisers", async (req, res) => {
     .select("*")
     .eq("status", "pending");
 
-  if (error) return res.status(500).json({ success: false, error: error.message });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
   res.json({ success: true, data });
 });
 
@@ -120,12 +121,14 @@ app.post("/admin/approve-adviser", async (req, res) => {
     .update({ status: "approved" })
     .eq("id", id);
 
-  if (error) return res.status(500).json({ success: false, error: error.message });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
   res.json({ success: true });
 });
 
 // -----------------------------------------------------
-// 🔹 FEES (ACTIVE)
+// FEES (ACTIVE)
 // -----------------------------------------------------
 app.get("/fees/active", async (req, res) => {
   const { data, error } = await supabase
@@ -141,7 +144,7 @@ app.get("/fees/active", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 🔹 STUDENT SUBMIT PAYMENT
+// STUDENT SUBMIT PAYMENT
 // -----------------------------------------------------
 app.post("/student/submit-payment", async (req, res) => {
   const {
@@ -152,7 +155,13 @@ app.post("/student/submit-payment", async (req, res) => {
     transaction_date
   } = req.body || {};
 
-  if (!student_id || !fee_code || !amount || !transaction_id || !transaction_date) {
+  if (
+    !student_id ||
+    !fee_code ||
+    !amount ||
+    !transaction_id ||
+    !transaction_date
+  ) {
     return res.status(400).json({
       success: false,
       error: "Missing required payment fields"
@@ -182,7 +191,7 @@ app.post("/student/submit-payment", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 🔹 STUDENT PAYMENT STATUS
+// STUDENT PAYMENT STATUS
 // -----------------------------------------------------
 app.get("/student/payments", async (req, res) => {
   const { student_id } = req.query;
@@ -208,7 +217,7 @@ app.get("/student/payments", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 🔹 ADMIN PAYMENT VERIFICATION
+// ADMIN PAYMENT VERIFICATION
 // -----------------------------------------------------
 app.get("/admin/pending-payments", async (req, res) => {
   const { data, error } = await supabase
@@ -272,7 +281,7 @@ app.post("/admin/reject-payment", async (req, res) => {
 });
 
 // -----------------------------------------------------
-// 🚀 START SERVER
+// START SERVER
 // -----------------------------------------------------
 app.listen(PORT, () => {
   console.log(`IIBSE Backend LIVE on PORT ${PORT}`);
