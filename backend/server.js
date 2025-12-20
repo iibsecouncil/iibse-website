@@ -1,5 +1,5 @@
 // -----------------------------------------------------
-// IIBSE BACKEND — PHASE 1 (FINAL CLEAN VERSION)
+// IIBSE BACKEND — PHASE 1 (FINAL STABLE VERSION)
 // -----------------------------------------------------
 
 import express from "express";
@@ -27,14 +27,14 @@ const supabase = createClient(
 );
 
 // -----------------------------------------------------
-// BASIC TEST (CONFIRM BACKEND IS LIVE)
+// BASIC TEST
 // -----------------------------------------------------
 app.get("/", (req, res) => {
   res.send("IIBSE Backend Running — Jai Shri Krishna 🚀");
 });
 
 // -----------------------------------------------------
-// ADMIN — READ ADVISERS (PHASE-1)
+// ADMIN — READ ADVISERS
 // -----------------------------------------------------
 app.get("/admin/advisers", async (req, res) => {
   const { data, error } = await supabase
@@ -42,11 +42,35 @@ app.get("/admin/advisers", async (req, res) => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) {
-    return res.status(500).json({ error: error.message });
-  }
-
+  if (error) return res.status(500).json({ error: error.message });
   res.json(data || []);
+});
+
+// -----------------------------------------------------
+// ADMIN — APPROVE / REJECT ADVISER
+// -----------------------------------------------------
+app.post("/admin/approve-adviser", async (req, res) => {
+  const { id } = req.body;
+
+  const { error } = await supabase
+    .from("advisers")
+    .update({ status: "approved" })
+    .eq("id", id);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ success: true });
+});
+
+app.post("/admin/reject-adviser", async (req, res) => {
+  const { id } = req.body;
+
+  const { error } = await supabase
+    .from("advisers")
+    .update({ status: "rejected" })
+    .eq("id", id);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ success: true });
 });
 
 // -----------------------------------------------------
@@ -58,10 +82,7 @@ app.get("/admin/schools", async (req, res) => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) {
-    return res.status(500).json({ error: error.message });
-  }
-
+  if (error) return res.status(500).json({ error: error.message });
   res.json(data || []);
 });
 
@@ -74,11 +95,35 @@ app.get("/admin/payments", async (req, res) => {
     .select("*")
     .order("submitted_at", { ascending: false });
 
-  if (error) {
-    return res.status(500).json({ error: error.message });
-  }
-
+  if (error) return res.status(500).json({ error: error.message });
   res.json(data || []);
+});
+
+// -----------------------------------------------------
+// ADMIN — VERIFY / REJECT PAYMENT
+// -----------------------------------------------------
+app.post("/admin/verify-payment", async (req, res) => {
+  const { payment_id } = req.body;
+
+  const { error } = await supabase
+    .from("payments")
+    .update({ status: "verified", verified_at: new Date() })
+    .eq("id", payment_id);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ success: true });
+});
+
+app.post("/admin/reject-payment", async (req, res) => {
+  const { payment_id } = req.body;
+
+  const { error } = await supabase
+    .from("payments")
+    .update({ status: "rejected" })
+    .eq("id", payment_id);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ success: true });
 });
 
 // -----------------------------------------------------
@@ -89,10 +134,7 @@ app.post("/school/apply", async (req, res) => {
     .from("schools")
     .insert([{ ...req.body, status: "pending" }]);
 
-  if (error) {
-    return res.status(500).json({ success: false, error: error.message });
-  }
-
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true, data });
 });
 
@@ -104,10 +146,7 @@ app.post("/adviser/apply", async (req, res) => {
     .from("advisers")
     .insert([{ ...req.body, status: "pending" }]);
 
-  if (error) {
-    return res.status(500).json({ success: false, error: error.message });
-  }
-
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true, data });
 });
 
@@ -121,10 +160,7 @@ app.get("/fees/active", async (req, res) => {
     .eq("active", true)
     .order("amount", { ascending: true });
 
-  if (error) {
-    return res.status(500).json({ success: false, error: error.message });
-  }
-
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true, data });
 });
 
@@ -140,69 +176,25 @@ app.post("/student/submit-payment", async (req, res) => {
     transaction_date
   } = req.body || {};
 
-  if (
-    !student_id ||
-    !fee_code ||
-    !amount ||
-    !transaction_id ||
-    !transaction_date
-  ) {
-    return res.status(400).json({
-      success: false,
-      error: "Missing required payment fields"
-    });
+  if (!student_id || !fee_code || !amount || !transaction_id || !transaction_date) {
+    return res.status(400).json({ success: false, error: "Missing required fields" });
   }
 
-  const { data, error } = await supabase.from("payments").insert([
-    {
-      student_id,
-      fee_code,
-      amount,
-      transaction_id,
-      submitted_at: transaction_date,
-      status: "pending"
-    }
-  ]);
+  const { data, error } = await supabase.from("payments").insert([{
+    student_id,
+    fee_code,
+    amount,
+    transaction_id,
+    submitted_at: transaction_date,
+    status: "pending"
+  }]);
 
-  if (error) {
-    return res.status(500).json({ success: false, error: error.message });
-  }
-
-  res.json({
-    success: true,
-    message: "Payment submitted successfully. Verification pending.",
-    data
-  });
-});
-
-// -----------------------------------------------------
-// STUDENT — PAYMENT STATUS
-// -----------------------------------------------------
-app.get("/student/payments", async (req, res) => {
-  const { student_id } = req.query;
-
-  if (!student_id) {
-    return res.status(400).json({
-      success: false,
-      error: "student_id required"
-    });
-  }
-
-  const { data, error } = await supabase
-    .from("payments")
-    .select("*")
-    .eq("student_id", student_id)
-    .order("submitted_at", { ascending: false });
-
-  if (error) {
-    return res.status(500).json({ success: false, error: error.message });
-  }
-
+  if (error) return res.status(500).json({ success: false, error: error.message });
   res.json({ success: true, data });
 });
 
 // -----------------------------------------------------
-// START SERVER (ALWAYS LAST)
+// START SERVER
 // -----------------------------------------------------
 app.listen(PORT, () => {
   console.log(`IIBSE Backend LIVE on PORT ${PORT}`);
