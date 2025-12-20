@@ -39,6 +39,22 @@ const supabase = createClient(
 );
 
 // -----------------------------------------------------
+// 🔹 ADMIN – READ ADVISERS (PHASE-1 SIMPLE)
+// -----------------------------------------------------
+app.get("/admin/advisers", async (req, res) => {
+  const { data, error } = await supabase
+    .from("advisers")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.json(data);
+});
+
+// -----------------------------------------------------
 // BASIC TEST
 // -----------------------------------------------------
 app.get("/", (req, res) => {
