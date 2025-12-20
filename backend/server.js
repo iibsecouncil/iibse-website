@@ -1,3 +1,5 @@
+console.log("=== IIBSE SERVER.JS LOADED ===");
+
 import express from "express";
 import cors from "cors";
 import adminReadRoutes from "./routes/adminRead.js";
