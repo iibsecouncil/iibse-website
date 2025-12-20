@@ -20,6 +20,10 @@ const PORT = process.env.PORT || 5000;
 // -----------------------------------------------------
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
+app.get("/admin/advisers", (req, res) => {
+  res.json({ status: "DIRECT ADMIN ROUTE HIT" });
+});
+
 
 // -----------------------------------------------------
 // ADMIN ROUTES (DASHBOARD READ)
